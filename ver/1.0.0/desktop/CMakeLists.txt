@@ -1,5 +1,7 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
+SET(OGS_BGC_DIR ${CMAKE_SOURCE_DIR}/../../../../ogs-board-game-constructor)
+
 # Include common CMakeLists.txt.
 INCLUDE(${CMAKE_SOURCE_DIR}/../CMakeLists.txt)
 

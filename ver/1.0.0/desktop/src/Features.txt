@@ -1,0 +1,77 @@
+# main
+Application
+#Application+CameraManipulator
+Application+Logging
+#Application+MaterialPool
+Application+Mouse
+#Application+NodePool
+Application+Rendering
+#Application+ResourcePool
+Application+camera
+Application+frame+Reporting
+Application+run
+Application+setupWindow-desktop
+
+#MAIN_EXAMPLE_ENVIRONMENT_FUNCTION
+MAIN_EXAMPLE_LOG
+#MAIN_EXAMPLE_REGISTER_ENVIRONMENT_CLIENT
+Example
+Example+1.0.0
+#Example+EnvironmentClients
+#Example+LoadScriptTest
+#Example+Parameters
+#Example+ScriptingEnvironment
+#Example+loadCLIScript
+
+main-desktop
+main+Arguments-desktop
+
+# core
+Reporter
+
+# format
+commandLineArgumentsToParameters
+printfString
+splitString
+stringStartsWith
+stringsToString
+
+# input
+INPUT_MOUSE_LOG
+Mouse
+MouseButtons
+
+# log
+Logger
+log-default
+logLevelToString
+logprintf
+
+# render
+#MaterialPool
+createGraphicsContext-desktop
+createShaderProgram
+setupCamera
+
+# resource
+RESOURCE_LOG
+#RESOURCE_POOL_LOG
+#Pool
+#Pool+loadResource
+Resource
+ResourceStreamBuffer
+extension
+
+# scene
+#Pool
+#Pool+Root
+#Pool+createNode
+#Pool+createSphere
+#Pool+node
+createShape
+createSphere
+degreesToQuaternion
+nodeAtPosition
+quaternionToDegrees
+simplePosition
+setSimplePosition
