@@ -74,10 +74,24 @@ processFeatureDirs()
     done
 }
 
+generateAPI()
+{
+    version=$1
+    echo "Generating API"
+    featuresDir=$DIR/api
+    srcDir=$featuresDir/$FEATURES_TXT_DIR
+    featuresFile=$DIR/ver/$version/api/$FEATURES_FILENAME
+    echo "feature-tool $featuresFile $srcDir $featuresDir --comment-string=--"
+    feature-tool $featuresFile $srcDir $featuresDir --comment-string=--
+}
+
 main()
 {
     for version in $VERSIONS; do
         echo "Generating version '$version'"
+
+        # Generate embedded scripting API.
+        generateAPI $version
 
         # For each platform.
         for ((platformId=0; platformId < ${#PLATFORMS[@]}; platformId++)); do

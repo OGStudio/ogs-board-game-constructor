@@ -289,6 +289,7 @@ struct Example
         );
         // Example+KVC+application.camera.clearColor End
 
+
 // Example Start
     }
     ~Example()
