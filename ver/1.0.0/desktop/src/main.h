@@ -47,6 +47,11 @@ freely, subject to the following restrictions:
 // Application+Rendering End
 
 
+// Example+ScriptingEnvironment Start
+#include "script.h"
+#include <sol.hpp>
+
+// Example+ScriptingEnvironment End
 
 // MAIN_EXAMPLE_LOG Start
 #include "log.h"
@@ -233,19 +238,157 @@ struct Example
         this->app = new Application(EXAMPLE_TITLE);
 
 // Example End
+        // Example+Parameters Start
+        this->setupParameters(parameters);
+        
+        // Example+Parameters End
+        // Example+ScriptingEnvironment Start
+        this->setupScriptingEnvironment();
+        
+        // Example+ScriptingEnvironment End
+
+        // Example+KVC Start
+        this->setupKVC();
+        
+        // Example+KVC End
+        // Example+KVC+application.camera.clearColor Start
+        this->kvc->registerKey(
+            "application.camera.clearColor",
+            SCRIPT_ENVIRONMENT_CLIENT_CALL(
+                auto camera = this->app->camera();
+                // Set.
+                if (!values.empty())
+                {
+                    // Report error if values' count is insufficient.
+                    if (values.size() != 3)
+                    {
+                        MAIN_EXAMPLE_LOG(
+                            "ERROR Could not set value for key '%s' "
+                            "because values' count is not 3"
+                        );
+                    }
+                    // Apply color otherwise.
+                    else
+                    {
+                        auto color = camera->getClearColor();
+                        color.r() = atof(values[0].c_str());
+                        color.g() = atof(values[1].c_str());
+                        color.b() = atof(values[2].c_str());
+                        camera->setClearColor(color);
+                    }
+                }
+        
+                // Return current color for Get and after Set.
+                auto color = camera->getClearColor();
+                return std::vector<std::string>({
+                    format::printfString("%f", color.r()),
+                    format::printfString("%f", color.g()),
+                    format::printfString("%f", color.b()),
+                });
+            )
+        );
+        // Example+KVC+application.camera.clearColor End
+
 // Example Start
     }
     ~Example()
     {
 
 // Example End
+        // Example+ScriptingEnvironment Start
+        this->tearScriptingEnvironmentDown();
+        
+        // Example+ScriptingEnvironment End
+        // Example+KVC Start
+        this->tearKVCDown();
+        
+        // Example+KVC End
 // Example Start
         delete this->app;
     }
 
 // Example End
 
-
+    // Example+KVC Start
+    private:
+        script::KVC *kvc;
+        void setupKVC()
+        {
+            this->kvc = new script::KVC(this->environment);
+        }
+        void tearKVCDown()
+        {
+            delete this->kvc;
+        }
+    // Example+KVC End
+    // Example+Parameters Start
+    private:
+        Parameters parameters;
+        void setupParameters(const Parameters &parameters)
+        {
+            this->parameters = parameters;
+        }
+    // Example+Parameters End
+    // Example+ScriptingEnvironment Start
+    private:
+        script::Environment *environment;
+        sol::state *lua;
+    
+        void setupScriptingEnvironment()
+        {
+            this->environment = new script::Environment;
+    
+            this->lua = new sol::state;
+            this->lua->open_libraries();
+            // Register Environment instance.
+            (*this->lua)["ENV"] = this->environment;
+            // Register Environment class.
+            this->lua->new_usertype<script::Environment>(
+                "Environment",
+                // 'setVerbose' method.
+                "setVerbose",
+                [](script::Environment &env, bool state)
+                {
+                    env.setVerbose(state);
+                },
+                // 'addClient' method.
+                "addClient",
+                [](script::Environment &env, script::EnvironmentClient *client, sol::nested<std::vector<std::string> > keys)
+                {
+                    env.addClient(client, keys);
+                },
+                //&script::Environment::addClient,
+                // 'call' method.
+                "call",
+                [](script::Environment &env, const std::string &key, sol::nested<std::vector<std::string> > values)
+                {
+                    return env.call(key, values);
+                }
+            );
+            // Register EnvironmentClient class.
+            this->lua->new_usertype<script::EnvironmentClient>(
+                "EnvironmentClient",
+                // 'call' method.
+                "call",
+                sol::property(
+                    [](script::EnvironmentClient &ec, sol::function luaCallback)
+                    {
+                        ec.call =
+                            SCRIPT_ENVIRONMENT_CLIENT_CALL(
+                                sol::nested<std::vector<std::string> > result =
+                                    luaCallback(key, sol::as_table(values));
+                                return std::move(result.source);
+                            );
+                    }
+                )
+            );
+        }
+        void tearScriptingEnvironmentDown()
+        {
+            delete this->lua;
+            delete this->environment;
+        }
+    // Example+ScriptingEnvironment End
 // Example Start
 };
 // Example End

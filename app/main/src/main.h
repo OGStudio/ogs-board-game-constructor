@@ -101,77 +101,26 @@ namespace main
 // FEATURE Application/End
 
 // FEATURE Example+1.0.0/Title
-// FEATURE Example+02/Title
-// FEATURE Example+03/Title
-// FEATURE Example+04/Title
-// FEATURE Example+05/Title
 
 // FEATURE Example/Setup
         // FEATURE Example+Parameters/Setup
         // FEATURE Example+VBO/Setup
         // FEATURE Example+ScriptingEnvironment/Setup
-        // FEATURE Example+application.camera.clearColor/Setup
-        // FEATURE Example+application.camera.nodeAtPosition/Setup
-        // FEATURE Example+application.camera.position/Setup
-        // FEATURE Example+application.camera.rotation/Setup
-        // FEATURE Example+application.materialPool.createMaterial/Setup
-        // FEATURE Example+application.materialPool.createMaterialCopy/Setup
-        // FEATURE Example+application.materialPool.material.exists/Setup
-        // FEATURE Example+application.materialPool.material.setShaders/Setup
-        // FEATURE Example+application.materialPool.material.setUniform/Setup
-        // FEATURE Example+application.mouse/Setup
-        // FEATURE Example+application.nodePool.createNode/Setup
-        // FEATURE Example+application.nodePool.createSphere/Setup
-        // FEATURE Example+application.nodePool.node.addChild/Setup
-        // FEATURE Example+application.nodePool.node.exists/Setup
-        // FEATURE Example+application.nodePool.node.removeChild/Setup
-        // FEATURE Example+application.nodePool.node.removeFromParents/Setup
-        // FEATURE Example+application.nodePool.node.setMask/Setup
-        // FEATURE Example+application.nodePool.node.setMaterial/Setup
-        // FEATURE Example+application.nodePool.node.position/Setup
-        // FEATURE Example+application.nodePool.node.rotation/Setup
-        // FEATURE Example+application.parameters/Setup
-        // FEATURE Example+application.resourcePool.loadResource/Setup
-        // FEATURE Example+application.resourcePool.locations/Setup
-        // FEATURE Example+application.resourcePool.resource.exists/Setup
-        // FEATURE Example+LoadScriptTest/Setup
+
+        // FEATURE Example+KVC/Setup
+        // FEATURE Example+KVC+application.camera.clearColor/Setup
+
 // FEATURE Example/TearDown
         // FEATURE Example+ScriptingEnvironment/TearDown
-        // FEATURE Example+EnvironmentClients/TearDown
-        // FEATURE Example+application.mouse/TearDown
+        // FEATURE Example+KVC/TearDown
 // FEATURE Example/Impl
     // FEATURE Example+loadCLIScript/Impl
 
-    // FEATURE Example+EnvironmentClients/Impl
+    // FEATURE Example+KVC/Impl
     // FEATURE Example+LoadScriptTest/Impl
     // FEATURE Example+Parameters/Impl
     // FEATURE Example+ScriptingEnvironment/Impl
     // FEATURE Example+VBO/Impl
-
-    // FEATURE Example+application.camera.clearColor/Impl
-    // FEATURE Example+application.camera.nodeAtPosition/Impl
-    // FEATURE Example+application.camera.position/Impl
-    // FEATURE Example+application.camera.rotation/Impl
-    // FEATURE Example+application.materialPool.createMaterial/Impl
-    // FEATURE Example+application.materialPool.createMaterialCopy/Impl
-    // FEATURE Example+application.materialPool.material.exists/Impl
-    // FEATURE Example+application.materialPool.material.setShaders/Impl
-    // FEATURE Example+application.materialPool.material.setUniform/Impl
-    // FEATURE Example+application.mouse/Impl
-    // FEATURE Example+application.nodePool.createNode/Impl
-    // FEATURE Example+application.nodePool.createSphere/Impl
-    // FEATURE Example+application.nodePool.node.addChild/Impl
-    // FEATURE Example+application.nodePool.node.exists/Impl
-    // FEATURE Example+application.nodePool.node.removeChild/Impl
-    // FEATURE Example+application.nodePool.node.removeFromParents/Impl
-    // FEATURE Example+application.nodePool.node.setMask/Impl
-    // FEATURE Example+application.nodePool.node.setMaterial/Impl
-    // FEATURE Example+application.nodePool.node.position/Impl
-    // FEATURE Example+application.nodePool.node.rotation/Impl
-    // FEATURE Example+application.parameters/Impl
-    // FEATURE Example+application.resourcePool.loadResource/Impl
-    // FEATURE Example+application.resourcePool.locations/Impl
-    // FEATURE Example+application.resourcePool.resource.exists/Impl
 // FEATURE Example/End
 
 } // namespace main

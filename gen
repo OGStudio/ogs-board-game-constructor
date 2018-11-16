@@ -37,8 +37,8 @@ FEATURE_DIRS=(
     "/render"
     "/resource"
     "/scene"
+    "/script"
 )
-#    "/script"
 #    "/network"
 #    "/debug"
 
