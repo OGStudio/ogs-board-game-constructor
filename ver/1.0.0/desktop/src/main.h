@@ -47,6 +47,11 @@ freely, subject to the following restrictions:
 // Application+Rendering End
 
 
+// Example+LoadAPIScript Start
+#include "api.lua.h"
+#include "resource.h"
+
+// Example+LoadAPIScript End
 // Example+ScriptingEnvironment Start
 #include "script.h"
 #include <sol.hpp>
@@ -289,6 +294,10 @@ struct Example
         );
         // Example+KVC+application.camera.clearColor End
 
+        // Example+LoadAPIScript Start
+        this->loadAPIScript();
+        
+        // Example+LoadAPIScript End
 
 // Example Start
     }
@@ -390,6 +399,31 @@ struct Example
             delete this->environment;
         }
     // Example+ScriptingEnvironment End
+    // Example+LoadAPIScript Start
+    private:
+        void loadAPIScript()
+        {
+            MAIN_EXAMPLE_LOG("Loading embedded API script");
+            resource::Resource apiRes(
+                "scripts",
+                "api.lua",
+                api_lua,
+                api_lua_len
+            );
+            // Execute the script.
+            try {
+                this->lua->script(apiRes.contents);
+                MAIN_EXAMPLE_LOG("Successfully loaded embedded API script");
+            }
+            catch (const std::exception &e)
+            {
+                MAIN_EXAMPLE_LOG(
+                    "ERROR Could not load embedded API script. %s",
+                    e.what()
+                );
+            }
+        }
+    // Example+LoadAPIScript End
 // Example Start
 };
 // Example End

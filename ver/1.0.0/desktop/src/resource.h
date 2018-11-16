@@ -54,19 +54,32 @@ struct Resource
     Resource(
         const std::string &group,
         const std::string &name,
-        const std::string &contents,
-        unsigned int len
+        const std::string &contents
     ) :
         group(group),
         name(name),
-        contents(contents),
-        len(len)
+        contents(contents)
     { }
+
+    Resource(
+        const std::string &group,
+        const std::string &name,
+        const unsigned char *contents,
+        unsigned int len
+    ) :
+        group(group),
+        name(name)
+    {
+        this->contents =
+            std::string(
+                reinterpret_cast<const char *>(contents),
+                len
+            );
+    }
 
     std::string group;
     std::string name;
     std::string contents;
-    unsigned int len;
 };
 // Resource End
 // ResourceStreamBuffer Start
@@ -76,7 +89,7 @@ struct ResourceStreamBuffer : std::streambuf
     ResourceStreamBuffer(const Resource &resource)
     {
         char *contents = const_cast<char *>(resource.contents.data());
-        this->setg(contents, contents, contents + resource.len);
+        this->setg(contents, contents, contents + resource.contents.length());
     }
     // Implement 'seekoff()' to support 'seekg()' calls.
     // OpenSceneGraph plugins like OSG and ImageIO use 'seekg()'.

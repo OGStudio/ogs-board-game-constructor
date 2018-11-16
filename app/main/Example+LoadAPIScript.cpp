@@ -1,5 +1,6 @@
 FEATURE main.h/Include
 #include "api.lua.h"
+#include "resource.h"
 
 FEATURE main.h/Setup
 this->loadAPIScript();

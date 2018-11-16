@@ -15,7 +15,7 @@ Application+setupWindow-desktop
 MAIN_EXAMPLE_LOG
 Example
 Example+1.0.0
-#Example+LoadScriptTest
+Example+LoadAPIScript
 Example+Parameters
 Example+ScriptingEnvironment
 #Example+loadCLIScript

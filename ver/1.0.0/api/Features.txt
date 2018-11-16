@@ -1,3 +1,6 @@
+# core
+core.PropertiesMT
+
 # main
 main.application.camera
 main.application.camera.clearColor

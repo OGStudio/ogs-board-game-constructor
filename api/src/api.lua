@@ -84,3 +84,4 @@ main.application = {}
 -- FEATURE main.application.resourcePool.setLocations/Impl
 
 -- TODO set bg as a test?
+main.application.camera.clearColor = {0, 1, 0}

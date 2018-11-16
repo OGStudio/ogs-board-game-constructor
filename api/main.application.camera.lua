@@ -1,7 +1,7 @@
-FEATURE main.lua/Methods
+FEATURE api.lua/Methods
 main.application.camera = {
 
-FEATURE main.lua/Properties
+FEATURE api.lua/Properties
 }
 
 -- Set metatable to have properties easily.

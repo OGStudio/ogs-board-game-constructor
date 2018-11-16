@@ -23,7 +23,8 @@ INCLUDE_DIRECTORIES(${SOL2_DIR})
 # Reference resources.
 INCLUDE_DIRECTORIES(${PROJECT_DIR}/dat)
 # Reference embedded scripting API.
-INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR})
+# NOTE The path is relative to platform dir.
+INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/../api)
 
 # Provide libraries to link with.
 SET(

@@ -1,4 +1,4 @@
-FEATURE main.lua/Impl
+FEATURE api.lua/Impl
 do
     local shortKey = "clearColor"
     local key = "application.camera." .. shortKey
