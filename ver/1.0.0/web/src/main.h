@@ -63,10 +63,6 @@ freely, subject to the following restrictions:
 #include "resource.h"
 
 // Example+LoadAPIScript End
-// Example+LoadCLIScript Start
-#include <fstream>
-
-// Example+LoadCLIScript End
 // Example+ScriptingEnvironment Start
 #include "script.h"
 #include <sol.hpp>
@@ -485,10 +481,10 @@ struct Example
         this->loadAPIScript();
         
         // Example+LoadAPIScript End
-        // Example+LoadCLIScript Start
-        this->loadCLIScript();
+        // Example+LoadURLQueryScript Start
+        this->loadURLQueryScript();
         
-        // Example+LoadCLIScript End
+        // Example+LoadURLQueryScript End
 
 // Example Start
     }
@@ -588,6 +584,21 @@ struct Example
             delete this->lua;
             delete this->environment;
         }
+        void executeScript(const std::string &contents)
+        {
+            // Try to execute the script.
+            try {
+                this->lua->script(contents);
+                MAIN_EXAMPLE_LOG("Successfully executed script");
+            }
+            catch (const std::exception &e)
+            {
+                MAIN_EXAMPLE_LOG(
+                    "ERROR Could not execute script. %s",
+                    e.what()
+                );
+            }
+        }
     // Example+ScriptingEnvironment End
     // Example+LoadAPIScript Start
     private:
@@ -614,9 +625,9 @@ struct Example
             }
         }
     // Example+LoadAPIScript End
-    // Example+LoadCLIScript Start
+    // Example+LoadURLQueryScript Start
     private:
-        void loadCLIScript()
+        void loadURLQueryScript()
         {
             // Make sure `script` parameter exists.
             auto it = this->parameters.find("script");
@@ -626,34 +637,22 @@ struct Example
             }
     
             auto path = it->second;
-            MAIN_EXAMPLE_LOG("Loading script '%s'", path.c_str());
-            std::ifstream localScript(path);
-            if (localScript)
-            {
-                // Read file contents into string.
-                std::string fileContents(
-                    (std::istreambuf_iterator<char>(localScript)),
-                    (std::istreambuf_iterator<char>())
+            MAIN_EXAMPLE_LOG("Loading a script '%s'", path.c_str());
+    
+            auto success = [&](std::string response) {
+                MAIN_EXAMPLE_LOG("Successfully loaded the script");
+                this->executeScript(response);
+            };
+            auto failure = [&](std::string reason) {
+                MAIN_EXAMPLE_LOG(
+                    "ERROR Could not load the script. '%s'",
+                    reason.c_str()
                 );
-                // Execute the script.
-                try {
-                    this->lua->script(fileContents);
-                    MAIN_EXAMPLE_LOG("Successfully loaded local script");
-                }
-                catch (const std::exception &e)
-                {
-                    MAIN_EXAMPLE_LOG(
-                        "ERROR Could not load local script. %s",
-                        e.what()
-                    );
-                }
-            }
-            else
-            {
-                MAIN_EXAMPLE_LOG("ERROR Could not read local script");
-            }
+            };
+            // GET.
+            this->app->httpClient->get(path, success, failure);
         }
-    // Example+LoadCLIScript End
+    // Example+LoadURLQueryScript End
 // Example Start
 };
 // Example End

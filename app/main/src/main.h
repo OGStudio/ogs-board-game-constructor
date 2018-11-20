@@ -41,6 +41,7 @@ freely, subject to the following restrictions:
 
 // FEATURE Example+LoadAPIScript/Include
 // FEATURE Example+LoadCLIScript/Include
+// FEATURE Example+LoadURLSqueryScript/Include
 // FEATURE Example+ScriptingEnvironment/Include
 // FEATURE Example+VBO/Include
 
@@ -112,6 +113,7 @@ namespace main
 
         // FEATURE Example+LoadAPIScript/Setup
         // FEATURE Example+LoadCLIScript/Setup
+        // FEATURE Example+LoadURLQueryScript/Setup
 
 // FEATURE Example/TearDown
         // FEATURE Example+ScriptingEnvironment/TearDown
@@ -122,6 +124,7 @@ namespace main
     // FEATURE Example+ScriptingEnvironment/Impl
     // FEATURE Example+LoadAPIScript/Impl
     // FEATURE Example+LoadCLIScript/Impl
+    // FEATURE Example+LoadURLQueryScript/Impl
     // FEATURE Example+VBO/Impl
 // FEATURE Example/End
 
