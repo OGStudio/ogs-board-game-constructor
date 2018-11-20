@@ -38,6 +38,10 @@ freely, subject to the following restrictions:
 
 // Application+setupWindow-web End
 
+// Application+HTTPClient Start
+#include "network.h"
+
+// Application+HTTPClient End
 // Application+Logging Start
 #include "log.h"
 
@@ -118,12 +122,28 @@ class Application
             this->setupMouse();
             
             // Application+Mouse End
+            // Application+HTTPClient Start
+            this->setupHTTPClient();
+            
+            // Application+HTTPClient End
+            // Application+HTTPClientProcessor Start
+            this->setupHTTPClientProcessor();
+            
+            // Application+HTTPClientProcessor End
 // Application Start
         }
         ~Application()
         {
 
 // Application End
+            // Application+HTTPClientProcessor Start
+            this->tearHTTPClientProcessorDown();
+            
+            // Application+HTTPClientProcessor End
+            // Application+HTTPClient Start
+            this->tearHTTPClientDown();
+            
+            // Application+HTTPClient End
             // Application+Mouse Start
             this->tearMouseDown();
             
@@ -292,6 +312,42 @@ class Application
         }
     // Application+setupWindow-web End
 
+    // Application+HTTPClient Start
+    public:
+        network::HTTPClient *httpClient;
+    private:
+        void setupHTTPClient()
+        {
+            this->httpClient = new network::HTTPClient;
+        }
+        void tearHTTPClientDown()
+        {
+            delete this->httpClient;
+        }
+    // Application+HTTPClient End
+    // Application+HTTPClientProcessor Start
+    public:
+        network::HTTPClientProcessor *httpClientProcessor;
+    private:
+        const std::string httpClientProcessorCallbackName = "HTTPClientProcessor";
+    
+        void setupHTTPClientProcessor()
+        {
+            this->httpClientProcessor = new network::HTTPClientProcessor(this->httpClient);
+            // Subscribe processor to be processed each frame.
+            this->frameReporter.addCallback(
+                [&] {
+                    this->httpClientProcessor->process();
+                },
+                this->httpClientProcessorCallbackName
+            );
+        }
+        void tearHTTPClientProcessorDown()
+        {
+            this->frameReporter.removeCallback(this->httpClientProcessorCallbackName);
+            delete this->httpClientProcessor;
+        }
+    // Application+HTTPClientProcessor End
     // Application+Logging Start
     private:
         log::Logger *logger;

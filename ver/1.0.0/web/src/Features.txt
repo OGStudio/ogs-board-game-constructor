@@ -2,6 +2,8 @@
 MAIN_APPLICATION_LOG
 Application
 #Application+CameraManipulator
+Application+HTTPClient
+Application+HTTPClientProcessor
 Application+Logging
 #Application+MaterialPool
 Application+Mouse
@@ -53,6 +55,13 @@ Logger
 log-default
 logLevelToString
 logprintf
+
+# network
+HTTPClient
+HTTPClientProcessor
+HTTPRequest
+HTTPRequestProcessorFetch
+fetch
 
 # render
 #MaterialPool
