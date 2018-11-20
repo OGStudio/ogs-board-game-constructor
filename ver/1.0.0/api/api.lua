@@ -106,6 +106,3 @@ setmetatable(main.application.camera, cameraMT)
     end
     -- main.application.camera.clearColor End
 
-
--- TODO set bg as a test?
-main.application.camera.clearColor = {0, 1, 0}

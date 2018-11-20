@@ -39,9 +39,8 @@ freely, subject to the following restrictions:
 // FEATURE Application+ResourcePool/Include
 // FEATURE Application+WindowResizing-web/Include
 
-// FEATURE Example+loadCLIScript/Include
-
 // FEATURE Example+LoadAPIScript/Include
+// FEATURE Example+LoadCLIScript/Include
 // FEATURE Example+ScriptingEnvironment/Include
 // FEATURE Example+VBO/Include
 
@@ -112,18 +111,17 @@ namespace main
         // FEATURE Example+KVC+application.camera.clearColor/Setup
 
         // FEATURE Example+LoadAPIScript/Setup
+        // FEATURE Example+LoadCLIScript/Setup
 
 // FEATURE Example/TearDown
         // FEATURE Example+ScriptingEnvironment/TearDown
         // FEATURE Example+KVC/TearDown
 // FEATURE Example/Impl
-    // FEATURE Example+loadCLIScript/Impl
-
     // FEATURE Example+KVC/Impl
-    // FEATURE Example+LoadScriptTest/Impl
     // FEATURE Example+Parameters/Impl
     // FEATURE Example+ScriptingEnvironment/Impl
     // FEATURE Example+LoadAPIScript/Impl
+    // FEATURE Example+LoadCLIScript/Impl
     // FEATURE Example+VBO/Impl
 // FEATURE Example/End
 

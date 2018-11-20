@@ -16,9 +16,9 @@ MAIN_EXAMPLE_LOG
 Example
 Example+1.0.0
 Example+LoadAPIScript
+Example+LoadCLIScript
 Example+Parameters
 Example+ScriptingEnvironment
-#Example+loadCLIScript
 
 Example+KVC
 Example+KVC+application.camera.clearColor
