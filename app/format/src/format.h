@@ -27,7 +27,7 @@ freely, subject to the following restrictions:
 
 // FEATURE printfString/Include
 // FEATURE commandLineArgumentsToParameters/Include
-// FEATURE urlQueryToParameters/Include
+// FEATURE urlToParameters/Include
 
 namespace bgc
 {
@@ -41,7 +41,7 @@ namespace format
 // FEATURE trimmedString/Impl
 
 // FEATURE commandLineArgumentsToParameters/Impl
-// FEATURE urlQueryToParameters/Impl
+// FEATURE urlToParameters/Impl
 
 } // namespace format
 } // namespace bgc

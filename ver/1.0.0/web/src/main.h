@@ -63,6 +63,10 @@ freely, subject to the following restrictions:
 #include "resource.h"
 
 // Example+LoadAPIScript End
+// Example+LoadIndexScript Start
+#include "network.h"
+
+// Example+LoadIndexScript End
 // Example+ScriptingEnvironment Start
 #include "script.h"
 #include <sol.hpp>
@@ -481,10 +485,10 @@ struct Example
         this->loadAPIScript();
         
         // Example+LoadAPIScript End
-        // Example+LoadURLQueryScript Start
-        this->loadURLQueryScript();
+        // Example+LoadIndexScript Start
+        this->loadIndexScript();
         
-        // Example+LoadURLQueryScript End
+        // Example+LoadIndexScript End
 
 // Example Start
     }
@@ -625,19 +629,20 @@ struct Example
             }
         }
     // Example+LoadAPIScript End
-    // Example+LoadURLQueryScript Start
+    // Example+LoadIndexScript Start
     private:
-        void loadURLQueryScript()
+        void loadIndexScript()
         {
-            // Make sure `script` parameter exists.
-            auto it = this->parameters.find("script");
+            // Make sure `base` parameter exists.
+            auto it = this->parameters.find("base");
             if (it == this->parameters.end())
             {
                 return;
             }
     
-            auto path = it->second;
-            MAIN_EXAMPLE_LOG("Loading a script '%s'", path.c_str());
+            auto base = it->second;
+            auto path = base + "/index.lua";
+            MAIN_EXAMPLE_LOG("Loading a script from '%s'", path.c_str());
     
             auto success = [&](std::string response) {
                 MAIN_EXAMPLE_LOG("Successfully loaded the script");
@@ -652,7 +657,7 @@ struct Example
             // GET.
             this->app->httpClient->get(path, success, failure);
         }
-    // Example+LoadURLQueryScript End
+    // Example+LoadIndexScript End
 // Example Start
 };
 // Example End

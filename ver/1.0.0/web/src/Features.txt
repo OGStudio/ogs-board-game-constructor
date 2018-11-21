@@ -20,7 +20,7 @@ MAIN_EXAMPLE_LOG
 Example
 Example+1.0.0
 Example+LoadAPIScript
-Example+LoadURLQueryScript
+Example+LoadIndexScript
 Example+Parameters
 Example+ScriptingEnvironment
 #Example+StaticPluginOSG
@@ -38,7 +38,7 @@ main+Input-web
 Reporter
 
 # format
-urlQueryToParameters
+urlToParameters
 printfString
 splitString
 stringStartsWith

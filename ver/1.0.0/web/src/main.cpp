@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
     
     // main-web End
         // main+Arguments-web Start
-        parameters = format::urlQueryToParameters(argc, argv);
+        parameters = format::urlToParameters(argc, argv);
         // main+Arguments-web End
     // main-web Start
     example = new main::Example(parameters);
