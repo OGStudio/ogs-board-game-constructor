@@ -633,15 +633,15 @@ struct Example
     private:
         void loadIndexScript()
         {
-            // Make sure `base` parameter exists.
-            auto it = this->parameters.find("base");
+            // Make sure `index` parameter exists.
+            auto it = this->parameters.find("index");
             if (it == this->parameters.end())
             {
                 return;
             }
     
-            auto base = it->second;
-            auto path = base + "/index.lua";
+            auto index = it->second;
+            auto path = index + "/../index.lua";
             MAIN_EXAMPLE_LOG("Loading a script from '%s'", path.c_str());
     
             auto success = [&](std::string response) {
