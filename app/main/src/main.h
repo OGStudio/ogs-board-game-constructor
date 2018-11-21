@@ -110,6 +110,7 @@ namespace main
 
         // FEATURE Example+KVC/Setup
         // FEATURE Example+KVC+application.camera.clearColor/Setup
+        // FEATURE Example+KVC+application.mouse/Setup
 
         // FEATURE Example+LoadAPIScript/Setup
         // FEATURE Example+LoadCLIScript/Setup
@@ -117,9 +118,11 @@ namespace main
 
 // FEATURE Example/TearDown
         // FEATURE Example+ScriptingEnvironment/TearDown
+        // FEATURE Example+KVC+application.mouse/TearDown
         // FEATURE Example+KVC/TearDown
 // FEATURE Example/Impl
     // FEATURE Example+KVC/Impl
+    // FEATURE Example+KVC+application.mouse/Impl
     // FEATURE Example+Parameters/Impl
     // FEATURE Example+ScriptingEnvironment/Impl
     // FEATURE Example+LoadAPIScript/Impl

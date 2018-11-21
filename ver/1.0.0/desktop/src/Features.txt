@@ -22,6 +22,7 @@ Example+ScriptingEnvironment
 
 Example+KVC
 Example+KVC+application.camera.clearColor
+Example+KVC+application.mouse
 
 main-desktop
 main+Arguments-desktop

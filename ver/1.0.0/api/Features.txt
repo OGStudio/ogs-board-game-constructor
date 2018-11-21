@@ -1,6 +1,8 @@
 # core
 core.PropertiesMT
+core.Reporter
 
 # main
 main.application.camera
 main.application.camera.clearColor
+main.application.mouse
