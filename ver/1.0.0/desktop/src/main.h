@@ -330,6 +330,103 @@ struct Example
         this->setupApplicationMouse();
         
         // Example+KVC+application.mouse End
+        // Example+KVC+application.nodePool.createNode Start
+        this->kvc->registerKey(
+            "application.nodePool.createNode",
+            SCRIPT_ENVIRONMENT_CLIENT_CALL(
+                // Set.
+                if (!values.empty())
+                {
+                    // Make sure there is one component.
+                    if (values.size() != 1)
+                    {
+                        MAIN_EXAMPLE_LOG(
+                            "ERROR Could not set value for key '%s' "
+                            "because values' count is not 1"
+                        );
+                        return std::vector<std::string>();
+                    }
+        
+                    // Create node.
+                    auto pool = this->app->nodePool;
+                    auto name = values[0];
+                    pool->createNode(name);
+                }
+        
+                return std::vector<std::string>();
+            )
+        );
+        // Example+KVC+application.nodePool.createNode End
+        // Example+KVC+application.nodePool.createSphere Start
+        this->kvc->registerKey(
+            "application.nodePool.createSphere",
+            SCRIPT_ENVIRONMENT_CLIENT_CALL(
+                // Set.
+                if (!values.empty())
+                {
+                    // Make sure there are two components.
+                    if (values.size() != 2)
+                    {
+                        MAIN_EXAMPLE_LOG(
+                            "ERROR Could not set value for key '%s' "
+                            "because values' count is not 2"
+                        );
+                        return std::vector<std::string>();
+                    }
+        
+                    // Create sphere.
+                    auto pool = this->app->nodePool;
+                    auto name = values[0];
+                    auto radius = atof(values[1].c_str());
+                    pool->createSphere(name, radius);
+                }
+        
+                return std::vector<std::string>();
+            )
+        );
+        // Example+KVC+application.nodePool.createSphere End
+        // Example+KVC+application.nodePool.node.addChild Start
+        this->kvc->registerKey(
+            "application.nodePool.node.addChild",
+            SCRIPT_ENVIRONMENT_CLIENT_CALL(
+                // Set.
+                if (!values.empty())
+                {
+                    // Make sure there are two components.
+                    if (values.size() != 2)
+                    {
+                        MAIN_EXAMPLE_LOG(
+                            "ERROR Could not set value for key '%s' "
+                            "because values' count is not 2"
+                        );
+                        return std::vector<std::string>();
+                    }
+        
+                    auto pool = this->app->nodePool;
+                    auto parentName = values[0];
+                    auto childName = values[1];
+                    auto parent = pool->node(parentName);
+                    auto child = pool->node(childName);
+        
+                    // Make sure parent and child exist.
+                    if (!parent || !child)
+                    {
+                        MAIN_EXAMPLE_LOG(
+                            "ERROR Could not add '%s' child node to '%s' parent node "
+                            "because node(s) do(es) not exist",
+                            childName.c_str(),
+                            parentName.c_str()
+                        );
+                        return std::vector<std::string>();
+                    }
+        
+                    parent->addChild(child);
+                }
+        
+                return std::vector<std::string>();
+            )
+        );
+        // Example+KVC+application.nodePool.node.addChild End
         // Example+KVC+application.nodePool.node.exists Start
         this->kvc->registerKey(
             "application.nodePool.node.exists",
@@ -362,6 +459,106 @@ struct Example
             )
         );
         // Example+KVC+application.nodePool.node.exists End
+        // Example+KVC+application.nodePool.node.position Start
+        this->kvc->registerKey(
+            "application.nodePool.node.position",
+            SCRIPT_ENVIRONMENT_CLIENT_CALL(
+                // Make sure there is at least one component.
+                if (values.size() < 1)
+                {
+                    MAIN_EXAMPLE_LOG(
+                        "ERROR Could not set value for key '%s' "
+                        "because values' count is less than 1",
+                        key.c_str()
+                    );
+                    return std::vector<std::string>();
+                }
+        
+                auto nodeName = values[0];
+                auto node = this->app->nodePool->node(nodeName);
+        
+                // Make sure node exists.
+                if (!node)
+                {
+                    MAIN_EXAMPLE_LOG(
+                        "ERROR Could not get or set position for node '%s' "
+                        "because it does not exist",
+                        nodeName.c_str()
+                    );
+                    return std::vector<std::string>();
+                }
+        
+                // Set.
+                if (values.size() == 4)
+                {
+                    osg::Vec3 position(
+                        atof(values[1].c_str()),
+                        atof(values[2].c_str()),
+                        atof(values[3].c_str())
+                    );
+                    scene::setSimplePosition(node, position);
+                }
+        
+                // Get.
+                auto position = scene::simplePosition(node);
+                return std::vector<std::string>({
+                    format::printfString("%f", position.x()),
+                    format::printfString("%f", position.y()),
+                    format::printfString("%f", position.z()),
+                });
+            )
+        );
+        // Example+KVC+application.nodePool.node.position End
+        // Example+KVC+application.nodePool.node.rotation Start
+        this->kvc->registerKey(
+            "application.nodePool.node.rotation",
+            SCRIPT_ENVIRONMENT_CLIENT_CALL(
+                // Make sure there is at least one component.
+                if (values.size() < 1)
+                {
+                    MAIN_EXAMPLE_LOG(
+                        "ERROR Could not set value for key '%s' "
+                        "because values' count is less than 1",
+                        key.c_str()
+                    );
+                    return std::vector<std::string>();
+                }
+        
+                auto nodeName = values[0];
+                auto node = this->app->nodePool->node(nodeName);
+        
+                // Make sure node exists.
+                if (!node)
+                {
+                    MAIN_EXAMPLE_LOG(
+                        "ERROR Could not get or set rotation for node '%s' "
+                        "because it does not exist",
+                        nodeName.c_str()
+                    );
+                    return std::vector<std::string>();
+                }
+        
+                // Set.
+                if (values.size() == 4)
+                {
+                    osg::Vec3 rotation(
+                        atof(values[1].c_str()),
+                        atof(values[2].c_str()),
+                        atof(values[3].c_str())
+                    );
+                    scene::setSimpleRotation(node, rotation);
+                }
+        
+                // Get.
+                auto rotation = scene::simpleRotation(node);
+                return std::vector<std::string>({
+                    format::printfString("%f", rotation.x()),
+                    format::printfString("%f", rotation.y()),
+                    format::printfString("%f", rotation.z()),
+                });
+            )
+        );
+        // Example+KVC+application.nodePool.node.rotation End
 
         // Example+LoadAPIScript Start
         this->loadAPIScript();

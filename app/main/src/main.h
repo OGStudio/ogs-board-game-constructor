@@ -111,7 +111,12 @@ namespace main
         // FEATURE Example+KVC/Setup
         // FEATURE Example+KVC+application.camera.clearColor/Setup
         // FEATURE Example+KVC+application.mouse/Setup
+        // FEATURE Example+KVC+application.nodePool.createNode/Setup
+        // FEATURE Example+KVC+application.nodePool.createSphere/Setup
+        // FEATURE Example+KVC+application.nodePool.node.addChild/Setup
         // FEATURE Example+KVC+application.nodePool.node.exists/Setup
+        // FEATURE Example+KVC+application.nodePool.node.position/Setup
+        // FEATURE Example+KVC+application.nodePool.node.rotation/Setup
 
         // FEATURE Example+LoadAPIScript/Setup
         // FEATURE Example+LoadLocalIndexScript/Setup

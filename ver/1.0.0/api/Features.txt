@@ -13,3 +13,6 @@ main.application.nodePool.node
 
 # scene
 scene.Node
+scene.Node.addChild
+scene.Node.position
+scene.Node.rotation

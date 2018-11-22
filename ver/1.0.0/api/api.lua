@@ -185,6 +185,14 @@ function scene.createNode(name)
         __name = name,
 
 -- scene.Node End
+        -- scene.Node.addChild Start
+        addChild = function(self, node)
+            local key = "application.nodePool.node.addChild"
+            local parent = self.__name
+            local child = node.__name
+            ENV:call(key, {parent, child})
+        end,
+        -- scene.Node.addChild End
 -- scene.Node Start
     }
 
@@ -193,6 +201,56 @@ function scene.createNode(name)
     setmetatable(instance, propertiesMT)
 
 -- scene.Node End
+    -- scene.Node.position Start
+    do
+        local shortKey = "position"
+        local key = "application.nodePool.node." .. shortKey
+        propertiesMT:register(
+            shortKey,
+            function(self)
+                local node = self.__name
+                return ENV:call(key, {node})
+            end,
+            function(self, position)
+                local node = self.__name
+                ENV:call(
+                    key,
+                    {
+                        node,
+                        position[1],
+                        position[2],
+                        position[3],
+                    }
+                )
+            end
+        )
+    end
+    -- scene.Node.position End
+    -- scene.Node.rotation Start
+    do
+        local shortKey = "rotation"
+        local key = "application.nodePool.node." .. shortKey
+        propertiesMT:register(
+            shortKey,
+            function(self)
+                local node = self.__name
+                return ENV:call(key, {node})
+            end,
+            function(self, rotation)
+                local node = self.__name
+                ENV:call(
+                    key,
+                    {
+                        node,
+                        rotation[1],
+                        rotation[2],
+                        rotation[3],
+                    }
+                )
+            end
+        )
+    end
+    -- scene.Node.rotation End
 -- scene.Node Start
     return instance
 end
