@@ -177,6 +177,26 @@ resource = {}
 
 scene = {}
 
+-- scene.Node Start
+-- NOTE This is only a wrapper for a valid node at C++ side.
+-- NOTE This does NOT create anything at C++ side.
+function scene.createNode(name)
+    local instance = {
+        __name = name,
+
+-- scene.Node End
+-- scene.Node Start
+    }
+
+    -- Set metatable to have properties easily.
+    local propertiesMT = core.createPropertiesMT()
+    setmetatable(instance, propertiesMT)
+
+-- scene.Node End
+-- scene.Node Start
+    return instance
+end
+-- scene.Node End
 
 main = {}
 main.application = {}
@@ -255,6 +275,20 @@ end
 -- main.application.nodePool Start
 main.application.nodePool = {}
 -- main.application.nodePool End
+-- main.application.nodePool.createNode Start
+function main.application.nodePool.createNode(self, name)
+    local key = "application.nodePool.createNode"
+    ENV:call(key, {name})
+    return scene.createNode(name)
+end
+-- main.application.nodePool.createNode End
+-- main.application.nodePool.createSphere Start
+function main.application.nodePool.createSphere(self, name, radius)
+    local key = "application.nodePool.createSphere"
+    ENV:call(key, {name, radius})
+    return scene.createNode(name)
+end
+-- main.application.nodePool.createSphere End
 -- main.application.nodePool.node Start
 function main.application.nodePool.node(self, name)
     local key = "application.nodePool.node.exists"

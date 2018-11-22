@@ -7,4 +7,9 @@ main.application.camera
 main.application.camera.clearColor
 main.application.mouse
 main.application.nodePool
+main.application.nodePool.createNode
+main.application.nodePool.createSphere
 main.application.nodePool.node
+
+# scene
+scene.Node

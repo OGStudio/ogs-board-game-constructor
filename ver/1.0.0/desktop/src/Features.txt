@@ -24,6 +24,8 @@ Example+KVC
 Example+KVC+application.camera.clearColor
 Example+KVC+application.mouse
 Example+KVC+application.nodePool.node.exists
+Example+KVC+application.nodePool.createNode
+Example+KVC+application.nodePool.createSphere
 
 main-desktop
 main+Arguments-desktop
