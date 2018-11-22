@@ -111,6 +111,7 @@ namespace main
         // FEATURE Example+KVC/Setup
         // FEATURE Example+KVC+application.camera.clearColor/Setup
         // FEATURE Example+KVC+application.mouse/Setup
+        // FEATURE Example+KVC+application.nodePool.node.exists/Setup
 
         // FEATURE Example+LoadAPIScript/Setup
         // FEATURE Example+LoadLocalIndexScript/Setup

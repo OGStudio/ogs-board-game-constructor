@@ -4,7 +4,7 @@ Application
 Application+Logging
 #Application+MaterialPool
 Application+Mouse
-#Application+NodePool
+Application+NodePool
 Application+Rendering
 #Application+ResourcePool
 Application+camera
@@ -23,6 +23,7 @@ Example+ScriptingEnvironment
 Example+KVC
 Example+KVC+application.camera.clearColor
 Example+KVC+application.mouse
+Example+KVC+application.nodePool.node.exists
 
 main-desktop
 main+Arguments-desktop
@@ -64,11 +65,11 @@ ResourceStreamBuffer
 extension
 
 # scene
-#Pool
-#Pool+Root
-#Pool+createNode
-#Pool+createSphere
-#Pool+node
+Pool
+Pool+Root
+Pool+createNode
+Pool+createSphere
+Pool+node
 createShape
 createSphere
 degreesToQuaternion

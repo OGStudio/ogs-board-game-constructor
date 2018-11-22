@@ -38,6 +38,10 @@ freely, subject to the following restrictions:
 #include "input.h"
 
 // Application+Mouse End
+// Application+NodePool Start
+#include "scene.h"
+
+// Application+NodePool End
 // Application+Rendering Start
 #include "render.h"
 
@@ -99,12 +103,20 @@ class Application
             this->setupMouse();
             
             // Application+Mouse End
+            // Application+NodePool Start
+            this->setupNodePool();
+            
+            // Application+NodePool End
 // Application Start
         }
         ~Application()
         {
 
 // Application End
+            // Application+NodePool Start
+            this->tearNodePoolDown();
+            
+            // Application+NodePool End
             // Application+Mouse Start
             this->tearMouseDown();
             
@@ -202,6 +214,24 @@ class Application
             this->viewer->removeEventHandler(this->mouse);
         }
     // Application+Mouse End
+    // Application+NodePool Start
+    public:
+        scene::Pool *nodePool;
+    private:
+        void setupNodePool()
+        {
+            this->nodePool = new scene::Pool;
+    
+            // Set pool's root node to viewer.
+            auto root = this->nodePool->node("root");
+            this->setScene(root);
+        }
+        void tearNodePoolDown()
+        {
+            this->setScene(0);
+            delete this->nodePool;
+        }
+    // Application+NodePool End
     // Application+Rendering Start
     public:
         void setScene(osg::Node *scene)
@@ -300,6 +330,38 @@ struct Example
         this->setupApplicationMouse();
         
         // Example+KVC+application.mouse End
+        // Example+KVC+application.nodePool.node.exists Start
+        this->kvc->registerKey(
+            "application.nodePool.node.exists",
+            SCRIPT_ENVIRONMENT_CLIENT_CALL(
+                // Set.
+                if (!values.empty())
+                {
+                    // Make sure there is one component.
+                    if (values.size() != 1)
+                    {
+                        MAIN_EXAMPLE_LOG(
+                            "ERROR Could not set value for key '%s' "
+                            "because values' count is not 1"
+                        );
+                        return std::vector<std::string>();
+                    }
+        
+                    // Locate named node.
+                    auto pool = this->app->nodePool;
+                    auto name = values[0];
+                    auto node = pool->node(name);
+                    // Report its presence.
+                    if (node != 0)
+                    {
+                        return std::vector<std::string>({ "true" });
+                    }
+                }
+        
+                return std::vector<std::string>();
+            )
+        );
+        // Example+KVC+application.nodePool.node.exists End
 
         // Example+LoadAPIScript Start
         this->loadAPIScript();

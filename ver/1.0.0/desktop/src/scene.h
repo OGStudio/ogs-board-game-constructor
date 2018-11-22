@@ -40,6 +40,10 @@ freely, subject to the following restrictions:
 
 // setSimplePosition End
 
+// Pool Start
+#include <osg/MatrixTransform>
+
+// Pool End
 
 namespace bgc
 {
@@ -176,7 +180,81 @@ osg::Node *nodeAtPosition(
 // nodeAtPosition End
 
 
+// Pool Start
+class Pool
+{
+    public:
+        Pool()
+        {
 
+// Pool End
+            // Pool+Root Start
+            this->setupRoot();
+            
+            // Pool+Root End
+// Pool Start
+        }
+        ~Pool()
+        {
+
+// Pool End
+// Pool Start
+        }
+
+    private:
+        std::map<std::string, osg::ref_ptr<osg::MatrixTransform> > nodes;
+
+// Pool End
+    // Pool+Root Start
+    private:
+        void setupRoot()
+        {
+            auto root = new osg::MatrixTransform;
+            this->nodes["root"] = root;
+        }
+    // Pool+Root End
+
+    // Pool+createNode Start
+    public:
+        osg::MatrixTransform *createNode(const std::string &name)
+        {
+            auto node = new osg::MatrixTransform;
+            node->setName(name);
+            this->nodes[name] = node;
+            return node;
+        }
+    // Pool+createNode End
+    // Pool+createSphere Start
+    public:
+        osg::MatrixTransform *createSphere(
+            const std::string &name,
+            float radius
+        ) {
+            auto sphere = scene::createSphere(radius);
+            sphere->setName(name);
+            this->nodes[name] = sphere;
+            return sphere;
+        }
+    // Pool+createSphere End
+    // Pool+node Start
+    public:
+        osg::MatrixTransform *node(const std::string &name)
+        {
+            auto it = this->nodes.find(name);
+    
+            // Return valid node.
+            if (it != this->nodes.end())
+            {
+                return it->second.get();
+            }
+    
+            // Found noting.
+            return 0;
+        }
+    // Pool+node End
+// Pool Start
+};
+// Pool End
 
 } // namespace scene
 } // namespace bgc
