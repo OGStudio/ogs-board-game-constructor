@@ -16,7 +16,7 @@ MAIN_EXAMPLE_LOG
 Example
 Example+1.0.0
 Example+LoadAPIScript
-Example+LoadCLIScript
+Example+LoadLocalIndexScript
 Example+Parameters
 Example+ScriptingEnvironment
 

@@ -63,10 +63,10 @@ freely, subject to the following restrictions:
 #include "resource.h"
 
 // Example+LoadAPIScript End
-// Example+LoadIndexScript Start
+// Example+LoadRemoteIndexScript Start
 #include "network.h"
 
-// Example+LoadIndexScript End
+// Example+LoadRemoteIndexScript End
 // Example+ScriptingEnvironment Start
 #include "script.h"
 #include <sol.hpp>
@@ -489,10 +489,10 @@ struct Example
         this->loadAPIScript();
         
         // Example+LoadAPIScript End
-        // Example+LoadIndexScript Start
-        this->loadIndexScript();
+        // Example+LoadRemoteIndexScript Start
+        this->loadRemoteIndexScript();
         
-        // Example+LoadIndexScript End
+        // Example+LoadRemoteIndexScript End
 
 // Example Start
     }
@@ -706,19 +706,23 @@ struct Example
             }
         }
     // Example+LoadAPIScript End
-    // Example+LoadIndexScript Start
+    // Example+LoadRemoteIndexScript Start
     private:
-        void loadIndexScript()
+        void loadRemoteIndexScript()
         {
-            // Make sure `index` parameter exists.
-            auto it = this->parameters.find("index");
+            // Make sure `base` parameter exists.
+            auto it = this->parameters.find("base");
             if (it == this->parameters.end())
             {
+                MAIN_EXAMPLE_LOG(
+                    "WARNING Not loading `index.lua` "
+                    "because `base` parameter is missing"
+                );
                 return;
             }
     
-            auto index = it->second;
-            auto path = index + "/../index.lua";
+            auto base = it->second;
+            auto path = base + "/index.lua";
             MAIN_EXAMPLE_LOG("Loading a script from '%s'", path.c_str());
     
             auto success = [&](std::string response) {
@@ -734,7 +738,7 @@ struct Example
             // GET.
             this->app->httpClient->get(path, success, failure);
         }
-    // Example+LoadIndexScript End
+    // Example+LoadRemoteIndexScript End
 // Example Start
 };
 // Example End

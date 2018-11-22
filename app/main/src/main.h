@@ -40,8 +40,8 @@ freely, subject to the following restrictions:
 // FEATURE Application+WindowResizing-web/Include
 
 // FEATURE Example+LoadAPIScript/Include
-// FEATURE Example+LoadCLIScript/Include
-// FEATURE Example+LoadIndexScript/Include
+// FEATURE Example+LoadLocalIndexScript/Include
+// FEATURE Example+LoadRemoteIndexScript/Include
 // FEATURE Example+ScriptingEnvironment/Include
 // FEATURE Example+VBO/Include
 
@@ -113,8 +113,8 @@ namespace main
         // FEATURE Example+KVC+application.mouse/Setup
 
         // FEATURE Example+LoadAPIScript/Setup
-        // FEATURE Example+LoadCLIScript/Setup
-        // FEATURE Example+LoadIndexScript/Setup
+        // FEATURE Example+LoadLocalIndexScript/Setup
+        // FEATURE Example+LoadRemoteIndexScript/Setup
 
 // FEATURE Example/TearDown
         // FEATURE Example+ScriptingEnvironment/TearDown
@@ -126,8 +126,8 @@ namespace main
     // FEATURE Example+Parameters/Impl
     // FEATURE Example+ScriptingEnvironment/Impl
     // FEATURE Example+LoadAPIScript/Impl
-    // FEATURE Example+LoadCLIScript/Impl
-    // FEATURE Example+LoadIndexScript/Impl
+    // FEATURE Example+LoadLocalIndexScript/Impl
+    // FEATURE Example+LoadRemoteIndexScript/Impl
     // FEATURE Example+VBO/Impl
 // FEATURE Example/End
 

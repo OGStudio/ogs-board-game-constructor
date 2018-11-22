@@ -20,7 +20,7 @@ MAIN_EXAMPLE_LOG
 Example
 Example+1.0.0
 Example+LoadAPIScript
-Example+LoadIndexScript
+Example+LoadRemoteIndexScript
 Example+Parameters
 Example+ScriptingEnvironment
 #Example+StaticPluginOSG

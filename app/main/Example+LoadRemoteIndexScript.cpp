@@ -2,21 +2,25 @@ FEATURE main.h/Include
 #include "network.h"
 
 FEATURE main.h/Setup
-this->loadIndexScript();
+this->loadRemoteIndexScript();
 
 FEATURE main.h/Impl
 private:
-    void loadIndexScript()
+    void loadRemoteIndexScript()
     {
-        // Make sure `index` parameter exists.
-        auto it = this->parameters.find("index");
+        // Make sure `base` parameter exists.
+        auto it = this->parameters.find("base");
         if (it == this->parameters.end())
         {
+            MAIN_EXAMPLE_LOG(
+                "WARNING Not loading `index.lua` "
+                "because `base` parameter is missing"
+            );
             return;
         }
 
-        auto index = it->second;
-        auto path = index + "/../index.lua";
+        auto base = it->second;
+        auto path = base + "/index.lua";
         MAIN_EXAMPLE_LOG("Loading a script from '%s'", path.c_str());
 
         auto success = [&](std::string response) {

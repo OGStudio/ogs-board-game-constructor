@@ -51,10 +51,10 @@ freely, subject to the following restrictions:
 #include "resource.h"
 
 // Example+LoadAPIScript End
-// Example+LoadCLIScript Start
+// Example+LoadLocalIndexScript Start
 #include <fstream>
 
-// Example+LoadCLIScript End
+// Example+LoadLocalIndexScript End
 // Example+ScriptingEnvironment Start
 #include "script.h"
 #include <sol.hpp>
@@ -305,10 +305,10 @@ struct Example
         this->loadAPIScript();
         
         // Example+LoadAPIScript End
-        // Example+LoadCLIScript Start
-        this->loadCLIScript();
+        // Example+LoadLocalIndexScript Start
+        this->loadLocalIndexScript();
         
-        // Example+LoadCLIScript End
+        // Example+LoadLocalIndexScript End
 
 // Example Start
     }
@@ -522,18 +522,23 @@ struct Example
             }
         }
     // Example+LoadAPIScript End
-    // Example+LoadCLIScript Start
+    // Example+LoadLocalIndexScript Start
     private:
-        void loadCLIScript()
+        void loadLocalIndexScript()
         {
-            // Make sure `script` parameter exists.
-            auto it = this->parameters.find("script");
+            // Make sure `base` parameter exists.
+            auto it = this->parameters.find("base");
             if (it == this->parameters.end())
             {
+                MAIN_EXAMPLE_LOG(
+                    "WARNING Not loading `index.lua` "
+                    "because `base` parameter is missing"
+                );
                 return;
             }
     
-            auto path = it->second;
+            auto base = it->second;
+            auto path = base + "/index.lua";
             MAIN_EXAMPLE_LOG("Loading a script from '%s'", path.c_str());
             std::ifstream localScript(path);
             if (localScript)
@@ -550,7 +555,7 @@ struct Example
                 MAIN_EXAMPLE_LOG("ERROR Could not read the script");
             }
         }
-    // Example+LoadCLIScript End
+    // Example+LoadLocalIndexScript End
 // Example Start
 };
 // Example End
