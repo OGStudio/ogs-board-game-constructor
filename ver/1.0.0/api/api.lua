@@ -286,6 +286,36 @@ setmetatable(main.application.camera, cameraMT)
         )
     end
     -- main.application.camera.clearColor End
+    -- main.application.camera.position Start
+    do
+        local shortKey = "position"
+        local key = "application.camera." .. shortKey
+        cameraMT:register(
+            shortKey,
+            function(self)
+                return ENV:call(key, {})
+            end,
+            function(self, value)
+                ENV:call(key, value)
+            end
+        )
+    end
+    -- main.application.camera.position End
+    -- main.application.camera.rotation Start
+    do
+        local shortKey = "rotation"
+        local key = "application.camera." .. shortKey
+        cameraMT:register(
+            shortKey,
+            function(self)
+                return ENV:call(key, {})
+            end,
+            function(self, value)
+                ENV:call(key, value)
+            end
+        )
+    end
+    -- main.application.camera.rotation End
 
 -- main.application.mouse Start
 -- Create mouse.

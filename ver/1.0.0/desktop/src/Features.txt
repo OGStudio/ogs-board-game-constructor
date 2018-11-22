@@ -1,6 +1,6 @@
 # main
 Application
-#Application+CameraManipulator
+Application+CameraManipulator
 Application+Logging
 #Application+MaterialPool
 Application+Mouse
@@ -22,6 +22,8 @@ Example+ScriptingEnvironment
 
 Example+KVC
 Example+KVC+application.camera.clearColor
+Example+KVC+application.camera.position
+Example+KVC+application.camera.rotation
 Example+KVC+application.mouse
 Example+KVC+application.nodePool.node.addChild
 Example+KVC+application.nodePool.node.exists

@@ -5,6 +5,8 @@ core.Reporter
 # main
 main.application.camera
 main.application.camera.clearColor
+main.application.camera.position
+main.application.camera.rotation
 main.application.mouse
 main.application.nodePool
 main.application.nodePool.createNode

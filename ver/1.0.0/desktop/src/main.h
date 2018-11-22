@@ -30,6 +30,10 @@ freely, subject to the following restrictions:
 
 // Application+frame+Reporting End
 
+// Application+CameraManipulator Start
+#include <osgGA/TrackballManipulator>
+
+// Application+CameraManipulator End
 // Application+Logging Start
 #include "log.h"
 
@@ -99,6 +103,10 @@ class Application
             this->setupRendering();
             
             // Application+Rendering End
+            // Application+CameraManipulator Start
+            this->setupCameraManipulator();
+            
+            // Application+CameraManipulator End
             // Application+Mouse Start
             this->setupMouse();
             
@@ -176,6 +184,21 @@ class Application
         }
     // Application+setupWindow-desktop End
 
+    // Application+CameraManipulator Start
+    private:
+        osg::ref_ptr<osgGA::TrackballManipulator> cameraManip;
+        void setupCameraManipulator()
+        {
+            // Create manipulator: CRITICAL for mobile and web.
+            this->cameraManip = new osgGA::TrackballManipulator;
+            this->viewer->setCameraManipulator(this->cameraManip);
+        }
+    public:
+        osgGA::TrackballManipulator *cameraManipulator()
+        {
+            return this->cameraManip;
+        }
+    // Application+CameraManipulator End
     // Application+Logging Start
     private:
         log::Logger *logger;
@@ -326,6 +349,90 @@ struct Example
             )
         );
         // Example+KVC+application.camera.clearColor End
+        // Example+KVC+application.camera.position Start
+        this->kvc->registerKey(
+            "application.camera.position",
+            SCRIPT_ENVIRONMENT_CLIENT_CALL(
+                auto manipulator = this->app->cameraManipulator();
+                osg::Vec3d pos;
+                osg::Quat q;
+                manipulator->getTransformation(pos, q);
+        
+                // Set.
+                if (!values.empty())
+                {
+                    // Make sure there are three components.
+                    if (values.size() != 3)
+                    {
+                        MAIN_EXAMPLE_LOG(
+                            "ERROR Could not set value for key '%s' "
+                            "because values' count is not 3"
+                        );
+                        return std::vector<std::string>();
+                    }
+        
+                    // Apply position.
+                    pos = {
+                        atof(values[0].c_str()),
+                        atof(values[1].c_str()),
+                        atof(values[2].c_str()),
+                    };
+                    manipulator->setTransformation(pos, q);
+                }
+        
+                // Return current position for Get and after Set.
+                manipulator->getTransformation(pos, q);
+                return std::vector<std::string>({
+                    format::printfString("%f", pos.x()),
+                    format::printfString("%f", pos.y()),
+                    format::printfString("%f", pos.z()),
+                });
+            )
+        );
+        // Example+KVC+application.camera.position End
+        // Example+KVC+application.camera.rotation Start
+        this->kvc->registerKey(
+            "application.camera.rotation",
+            SCRIPT_ENVIRONMENT_CLIENT_CALL(
+                auto manipulator = this->app->cameraManipulator();
+                osg::Vec3d pos;
+                osg::Quat q;
+                manipulator->getTransformation(pos, q);
+        
+                // Set.
+                if (!values.empty())
+                {
+                    // Make sure there are three components.
+                    if (values.size() != 3)
+                    {
+                        MAIN_EXAMPLE_LOG(
+                            "ERROR Could not set value for key '%s' "
+                            "because values' count is not 3"
+                        );
+                        return std::vector<std::string>();
+                    }
+        
+                    // Apply rotation.
+                    osg::Vec3d rot = {
+                        atof(values[0].c_str()),
+                        atof(values[1].c_str()),
+                        atof(values[2].c_str()),
+                    };
+                    q = scene::degreesToQuaternion(rot);
+                    manipulator->setTransformation(pos, q);
+                }
+        
+                // Return current position for Get and after Set.
+                manipulator->getTransformation(pos, q);
+                auto rot = scene::quaternionToDegrees(q);
+                return std::vector<std::string>({
+                    format::printfString("%f", rot.x()),
+                    format::printfString("%f", rot.y()),
+                    format::printfString("%f", rot.z()),
+                });
+            )
+        );
+        // Example+KVC+application.camera.rotation End
         // Example+KVC+application.mouse Start
         this->setupApplicationMouse();
         
