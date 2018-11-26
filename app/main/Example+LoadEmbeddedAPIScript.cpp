@@ -3,11 +3,11 @@ FEATURE main.h/Include
 #include "resource.h"
 
 FEATURE main.h/Setup
-this->loadAPIScript();
+this->loadEmbeddedAPIScript();
 
 FEATURE main.h/Impl
 private:
-    void loadAPIScript()
+    void loadEmbeddedAPIScript()
     {
         MAIN_EXAMPLE_LOG("Loading embedded API script");
         resource::Resource apiRes(

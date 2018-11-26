@@ -58,11 +58,6 @@ freely, subject to the following restrictions:
 
 // Application+Rendering End
 
-// Example+LoadAPIScript Start
-#include "api.lua.h"
-#include "resource.h"
-
-// Example+LoadAPIScript End
 // Example+LoadRemoteIndexScript Start
 #include "network.h"
 
@@ -485,10 +480,6 @@ struct Example
         
         // Example+KVC+application.mouse End
 
-        // Example+LoadAPIScript Start
-        this->loadAPIScript();
-        
-        // Example+LoadAPIScript End
         // Example+LoadRemoteIndexScript Start
         this->loadRemoteIndexScript();
         
@@ -681,31 +672,6 @@ struct Example
             }
         }
     // Example+ScriptingEnvironment End
-    // Example+LoadAPIScript Start
-    private:
-        void loadAPIScript()
-        {
-            MAIN_EXAMPLE_LOG("Loading embedded API script");
-            resource::Resource apiRes(
-                "scripts",
-                "api.lua",
-                api_lua,
-                api_lua_len
-            );
-            // Execute the script.
-            try {
-                this->lua->script(apiRes.contents);
-                MAIN_EXAMPLE_LOG("Successfully loaded embedded API script");
-            }
-            catch (const std::exception &e)
-            {
-                MAIN_EXAMPLE_LOG(
-                    "ERROR Could not load embedded API script. %s",
-                    e.what()
-                );
-            }
-        }
-    // Example+LoadAPIScript End
     // Example+LoadRemoteIndexScript Start
     private:
         void loadRemoteIndexScript()

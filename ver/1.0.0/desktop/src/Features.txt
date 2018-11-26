@@ -6,7 +6,7 @@ Application+Logging
 Application+Mouse
 Application+NodePool
 Application+Rendering
-#Application+ResourcePool
+Application+ResourcePool
 Application+camera
 Application+frame+Reporting
 Application+run
@@ -15,7 +15,8 @@ Application+setupWindow-desktop
 MAIN_EXAMPLE_LOG
 Example
 Example+1.0.0
-Example+LoadAPIScript
+Example+LoadEmbeddedAPIScript
+Example+LoadEmbeddedResources
 Example+LoadLocalIndexScript
 Example+Parameters
 Example+ScriptingEnvironment

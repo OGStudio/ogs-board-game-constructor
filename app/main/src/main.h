@@ -39,7 +39,8 @@ freely, subject to the following restrictions:
 // FEATURE Application+ResourcePool/Include
 // FEATURE Application+WindowResizing-web/Include
 
-// FEATURE Example+LoadAPIScript/Include
+// FEATURE Example+LoadEmbeddedAPIScript/Include
+// FEATURE Example+LoadEmbeddedResources/Include
 // FEATURE Example+LoadLocalIndexScript/Include
 // FEATURE Example+LoadRemoteIndexScript/Include
 // FEATURE Example+ScriptingEnvironment/Include
@@ -120,7 +121,8 @@ namespace main
         // FEATURE Example+KVC+application.nodePool.node.position/Setup
         // FEATURE Example+KVC+application.nodePool.node.rotation/Setup
 
-        // FEATURE Example+LoadAPIScript/Setup
+        // FEATURE Example+LoadEmbeddedAPIScript/Setup
+        // FEATURE Example+LoadEmbeddedResources/Setup
         // FEATURE Example+LoadLocalIndexScript/Setup
         // FEATURE Example+LoadRemoteIndexScript/Setup
 
@@ -133,7 +135,8 @@ namespace main
     // FEATURE Example+KVC+application.mouse/Impl
     // FEATURE Example+Parameters/Impl
     // FEATURE Example+ScriptingEnvironment/Impl
-    // FEATURE Example+LoadAPIScript/Impl
+    // FEATURE Example+LoadEmbeddedAPIScript/Impl
+    // FEATURE Example+LoadEmbeddedResources/Impl
     // FEATURE Example+LoadLocalIndexScript/Impl
     // FEATURE Example+LoadRemoteIndexScript/Impl
     // FEATURE Example+VBO/Impl
