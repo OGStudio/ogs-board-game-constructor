@@ -315,7 +315,7 @@ class Application
 // Application End
 
 // Example+1.0.0 Start
-const auto EXAMPLE_TITLE = "OGS Board game constructor 1.0.0: Memory gameplay";
+const auto EXAMPLE_TITLE = "ogstudio-1.0.0: Memory gameplay";
 // Example+1.0.0 End
 
 // Example Start

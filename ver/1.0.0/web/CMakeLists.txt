@@ -1,6 +1,6 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
-SET(OGS_BGC_DIR ${CMAKE_SOURCE_DIR}/../../../../ogs-board-game-constructor)
+SET(OGSTUDIO_DIR ${CMAKE_SOURCE_DIR}/../../../../ogstudio)
 
 # Include common CMakeLists.txt.
 INCLUDE(${CMAKE_SOURCE_DIR}/../CMakeLists.txt)
@@ -17,7 +17,7 @@ SET(IMAGE_LINK_LIBS "osgdb_png")
 # Link executable with libraries.
 TARGET_LINK_LIBRARIES(
     ${BINARY_NAME}
-    ${OGS_BGC_LINK_LIBS}
+    ${OGSTUDIO_LINK_LIBS}
     ${IMAGE_LINK_LIBS}
     lua
 )

@@ -1,5 +1,5 @@
 #!/bin/bash
-# This script generates source code for each OGS Board game constructor version
+# This script generates source code for each ogstudio version
 # by using the same source base with the help of
 # Feature Tool ( https://bitbucket.org/ogstudio/feature-tool )
 
@@ -69,8 +69,8 @@ processFeatureDirs()
     for ((id=0; id < ${#FEATURE_DIRS[@]}; id++)); do
         dirFeatures=${FEATURE_DIRS[$id]}
         dirFeaturesOSGCPE=$DIR_OSGCPE/features$dirFeatures
-        dirFeaturesOGSBGC=$DIR/app$dirFeatures
-        processFeatureDir $dirFeaturesAbs Features.txt $dirFeaturesOSGCPE $dirFeaturesOGSBGC
+        dirFeaturesOGSTUDIO=$DIR/app$dirFeatures
+        processFeatureDir $dirFeaturesAbs Features.txt $dirFeaturesOSGCPE $dirFeaturesOGSTUDIO
     done
 }
 
@@ -87,7 +87,7 @@ generateAPI()
     feature-tool $featuresFile $srcDir $featuresDir --comment-string=--
 
     # Generate api.lua.h
-    cd $DIR/ver/$version/api/ && xxd -i api.lua{,.h}
+    cd $DIR/ver/$version/api/ && xxd -i api.lua{,.h} && cd ../../..
 }
 
 main()
@@ -115,8 +115,8 @@ main()
                 dirFeaturesAbs=$DIR/ver/$version/$platform/$FEATURES_TXT_DIR
                 dir=$DIR/app${FEATURE_DIR_IOS}
                 dirFeaturesOSGCPE=$DIR_OSGCPE/features${FEATURE_DIR_IOS}
-                dirFeaturesOGSBGC=$DIR/app${FEATURE_DIR_IOS}
-                processFeatureDir $dirFeaturesAbs Features.txt $dirFeaturesOSGCPE $dirFeaturesOGSBGC
+                dirFeaturesOGSTUDIO=$DIR/app${FEATURE_DIR_IOS}
+                processFeatureDir $dirFeaturesAbs Features.txt $dirFeaturesOSGCPE $dirFeaturesOGSTUDIO
             fi
 
             # C++ and Java features for Android.
@@ -129,8 +129,8 @@ main()
                 dirFeaturesAbs=$DIR/ver/$version/$platform/$FEATURES_TXT_DIR_ANDROID_JAVA
                 dir=$DIR/app${FEATURE_DIR_ANDROID}
                 dirFeaturesOSGCPE=$DIR_OSGCPE/features${FEATURE_DIR_ANDROID}
-                dirFeaturesOGSBGC=$DIR/app${FEATURE_DIR_ANDROID}
-                processFeatureDir $dirFeaturesAbs Features.txt $dirFeaturesOSGCPE $dirFeaturesOGSBGC
+                dirFeaturesOGSTUDIO=$DIR/app${FEATURE_DIR_ANDROID}
+                processFeatureDir $dirFeaturesAbs Features.txt $dirFeaturesOSGCPE $dirFeaturesOGSTUDIO
             fi
         done
     done
