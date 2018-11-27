@@ -57,7 +57,22 @@ freely, subject to the following restrictions:
 #include <osgGA/TrackballManipulator>
 
 // Application+Rendering End
+// Application+ResourcePool Start
+#include "resource.h"
 
+// Application+ResourcePool End
+
+// Example+LoadEmbeddedAPIScript Start
+#include "api.lua.h"
+#include "resource.h"
+
+// Example+LoadEmbeddedAPIScript End
+// Example+LoadEmbeddedResources Start
+#include "shaders/color.vert.h"
+#include "shaders/color.frag.h"
+#include "resource.h"
+
+// Example+LoadEmbeddedResources End
 // Example+LoadRemoteIndexScript Start
 #include "network.h"
 
@@ -117,6 +132,10 @@ class Application
             this->setupMouse();
             
             // Application+Mouse End
+            // Application+ResourcePool Start
+            this->setupResourcePool();
+            
+            // Application+ResourcePool End
             // Application+HTTPClient Start
             this->setupHTTPClient();
             
@@ -139,6 +158,10 @@ class Application
             this->tearHTTPClientDown();
             
             // Application+HTTPClient End
+            // Application+ResourcePool Start
+            this->tearResourcePoolDown();
+            
+            // Application+ResourcePool End
             // Application+Mouse Start
             this->tearMouseDown();
             
@@ -405,6 +428,19 @@ class Application
             delete this->viewer;
         }
     // Application+Rendering End
+    // Application+ResourcePool Start
+    public:
+        resource::Pool *resourcePool;
+    private:
+        void setupResourcePool()
+        {
+            this->resourcePool = new resource::Pool;
+        }
+        void tearResourcePoolDown()
+        {
+            delete this->resourcePool;
+        }
+    // Application+ResourcePool End
 // Application Start
 };
 // Application End
@@ -480,6 +516,14 @@ struct Example
         
         // Example+KVC+application.mouse End
 
+        // Example+LoadEmbeddedAPIScript Start
+        this->loadEmbeddedAPIScript();
+        
+        // Example+LoadEmbeddedAPIScript End
+        // Example+LoadEmbeddedResources Start
+        this->loadEmbeddedResources();
+        
+        // Example+LoadEmbeddedResources End
         // Example+LoadRemoteIndexScript Start
         this->loadRemoteIndexScript();
         
@@ -672,6 +716,54 @@ struct Example
             }
         }
     // Example+ScriptingEnvironment End
+    // Example+LoadEmbeddedAPIScript Start
+    private:
+        void loadEmbeddedAPIScript()
+        {
+            MAIN_EXAMPLE_LOG("Loading embedded API script");
+            resource::Resource apiRes(
+                "scripts",
+                "api.lua",
+                api_lua,
+                api_lua_len
+            );
+            // Execute the script.
+            try {
+                this->lua->script(apiRes.contents);
+                MAIN_EXAMPLE_LOG("Successfully loaded embedded API script");
+            }
+            catch (const std::exception &e)
+            {
+                MAIN_EXAMPLE_LOG(
+                    "ERROR Could not load embedded API script. %s",
+                    e.what()
+                );
+            }
+        }
+    // Example+LoadEmbeddedAPIScript End
+    // Example+LoadEmbeddedResources Start
+    private:
+        void loadEmbeddedResources()
+        {
+            auto resourcePool = this->app->resourcePool;
+            resourcePool->addResource(
+                resource::Resource(
+                    "shaders",
+                    "color.vert",
+                    color_vert,
+                    color_vert_len
+                )
+            );
+            resourcePool->addResource(
+                resource::Resource(
+                    "shaders",
+                    "color.frag",
+                    color_frag,
+                    color_frag_len
+                )
+            );
+        }
+    // Example+LoadEmbeddedResources End
     // Example+LoadRemoteIndexScript Start
     private:
         void loadRemoteIndexScript()

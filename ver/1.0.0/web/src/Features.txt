@@ -9,7 +9,7 @@ Application+Logging
 Application+Mouse
 #Application+NodePool
 Application+Rendering
-#Application+ResourcePool
+Application+ResourcePool
 Application+camera
 Application+frame+Reporting
 Application+handleEvent-web
@@ -19,7 +19,8 @@ Application+setupWindow-web
 MAIN_EXAMPLE_LOG
 Example
 Example+1.0.0
-Example+LoadAPIScript
+Example+LoadEmbeddedAPIScript
+Example+LoadEmbeddedResources
 Example+LoadRemoteIndexScript
 Example+Parameters
 Example+ScriptingEnvironment
@@ -72,8 +73,8 @@ setupCamera
 
 # resource
 RESOURCE_LOG
-#RESOURCE_POOL_LOG
-#Pool
+RESOURCE_POOL_LOG
+Pool
 #Pool+loadResource
 Resource
 ResourceStreamBuffer

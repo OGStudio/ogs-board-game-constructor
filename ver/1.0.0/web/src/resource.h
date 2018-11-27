@@ -41,6 +41,17 @@ freely, subject to the following restrictions:
     )
 
 // RESOURCE_LOG End
+// RESOURCE_POOL_LOG Start
+#include "log.h"
+#include "format.h"
+#define RESOURCE_POOL_LOG_PREFIX "resource::Pool(%p) %s"
+#define RESOURCE_POOL_LOG(...) \
+    log::logprintf( \
+        RESOURCE_POOL_LOG_PREFIX, \
+        this, \
+        format::printfString(__VA_ARGS__).c_str() \
+    )
+// RESOURCE_POOL_LOG End
 
 namespace bgc
 {
@@ -130,6 +141,40 @@ std::string extension(const Resource &resource)
 // extension End
 
 
+// Pool Start
+class Pool
+{
+    public:
+        Pool() { }
+
+        std::vector<Resource> resources;
+
+        void addResource(Resource resource)
+        {
+            this->resources.push_back(resource);
+        }
+
+        Resource *resource(const std::string &group, const std::string &name)
+        {
+            auto count = this->resources.size();
+            for (int i = 0; i < count; ++i)
+            {
+                Resource *res = &this->resources[i];
+                if (
+                    (res->group == group) &&
+                    (res->name == name)
+                ) {
+                    return res;
+                }
+            }
+
+            return 0;
+        }
+
+// Pool End
+// Pool Start
+};
+// Pool End
 
 } // namespace resource
 } // namespace bgc

@@ -40,6 +40,10 @@ freely, subject to the following restrictions:
 
 // setSimplePosition End
 
+// Pool Start
+#include <osg/MatrixTransform>
+
+// Pool End
 
 namespace bgc
 {
@@ -176,7 +180,31 @@ osg::Node *nodeAtPosition(
 // nodeAtPosition End
 
 
+// Pool Start
+class Pool
+{
+    public:
+        Pool()
+        {
 
+// Pool End
+// Pool Start
+        }
+        ~Pool()
+        {
+
+// Pool End
+// Pool Start
+        }
+
+    private:
+        std::map<std::string, osg::ref_ptr<osg::MatrixTransform> > nodes;
+
+// Pool End
+
+// Pool Start
+};
+// Pool End
 
 } // namespace scene
 } // namespace bgc
