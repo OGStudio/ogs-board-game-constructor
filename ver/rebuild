@@ -1,0 +1,33 @@
+#!/bin/bash
+# This script rebuilds (yes, you build manually first) ogstudio
+# for all supported platforms.
+
+DIR=$(cd `dirname $0`; pwd)
+DIR_OSGCPE=$DIR/../../openscenegraph-cross-platform-examples
+
+VERSION=$1
+
+if [ -z "$VERSION" ]; then
+    echo "Usage: $0 VERSION"
+    exit 1
+fi
+
+# Regenerate.
+echo "Regenerate"
+$DIR/../gen
+
+# Desktop.
+echo "Rebuild for desktop"
+build=$DIR/$VERSION/desktop/build
+cd $build
+make -j3
+cd $DIR
+
+# Web.
+echo "Rebuild for web"
+build=$DIR/$VERSION/web/build
+cd $build
+make -j3
+$DIR_OSGCPE/tools/emscripten-arguments *js > /tmp/js
+cp /tmp/js *js
+cd $DIR
