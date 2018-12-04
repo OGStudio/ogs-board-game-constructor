@@ -239,10 +239,12 @@ class Application
                     queue.mouseMotion(absX, correctedY);
                     return true;
                 case SDL_FINGERDOWN: 
-                    queue.mouseButtonPress(absX, correctedY, e.tfinger.fingerId);
+                    // NOTE We pass `1` to denote LMB.
+                    queue.mouseButtonPress(absX, correctedY, 1);
                     return true;
                 case SDL_FINGERUP:
-                    queue.mouseButtonRelease(absX, correctedY, e.tfinger.fingerId);
+                    // NOTE We pass `1` to denote LMB.
+                    queue.mouseButtonRelease(absX, correctedY, 1);
                     return true;
                 default:
                     break;
