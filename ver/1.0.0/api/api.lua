@@ -170,6 +170,53 @@ end
 
 render = {}
 
+-- render.Material Start
+-- NOTE This is only a wrapper for a valid material at C++ side.
+-- NOTE This does NOT create anything at C++ side.
+function render.createMaterial(name)
+    local instance = {
+        __name = name,
+
+-- render.Material End
+        -- render.Material.setShaders Start
+        setShaders = function(self, vertex, fragment)
+            local key = "application.materialPool.material.setShaders"
+            ENV:call(
+                key,
+                {
+                    self.__name,
+                    vertex.__group,
+                    vertex.__name,
+                    fragment.__group,
+                    fragment.__name
+                }
+            )
+        end,
+        -- render.Material.setShaders End
+        -- render.Material.setUniform Start
+        setUniform = function(self, name, rawValue)
+            local key = "application.materialPool.material.setUniform"
+            local params = {self.__name, name}
+            -- Array.
+            if (type(rawValue) == "table")
+            then
+                for _, value in pairs(rawValue)
+                do
+                    table.insert(params, value)
+                end
+            -- Single value.
+            else
+                table.insert(params, rawValue)
+            end
+        
+            ENV:call(key, params)
+        end,
+        -- render.Material.setUniform End
+-- render.Material Start
+    }
+    return instance
+end
+-- render.Material End
 
 
 resource = {}
@@ -317,6 +364,16 @@ setmetatable(main.application.camera, cameraMT)
     end
     -- main.application.camera.rotation End
 
+-- main.application.materialPool Start
+main.application.materialPool = {}
+-- main.application.materialPool End
+-- main.application.materialPool.createMaterial Start
+function main.application.materialPool.createMaterial(self, name)
+    local key = "application.materialPool.createMaterial"
+    ENV:call(key, {name})
+    return render.createMaterial(name)
+end
+-- main.application.materialPool.createMaterial End
 -- main.application.mouse Start
 -- Create mouse.
 main.application.mouse = {

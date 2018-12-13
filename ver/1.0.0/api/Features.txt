@@ -7,6 +7,11 @@ main.application.camera
 main.application.camera.clearColor
 main.application.camera.position
 main.application.camera.rotation
+main.application.materialPool
+main.application.materialPool.createMaterial
+main.application.materialPool.material
+main.application.materialPool.material.setShaders
+main.application.materialPool.material.setUniform
 main.application.mouse
 main.application.nodePool
 main.application.nodePool.createNode
@@ -18,3 +23,8 @@ scene.Node
 scene.Node.addChild
 scene.Node.position
 scene.Node.rotation
+
+# render
+render.Material
+render.Material.setShaders
+render.Material.setUniform

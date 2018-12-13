@@ -113,6 +113,10 @@ namespace main
         // FEATURE Example+KVC+application.camera.clearColor/Setup
         // FEATURE Example+KVC+application.camera.position/Setup
         // FEATURE Example+KVC+application.camera.rotation/Setup
+        // FEATURE Example+KVC+application.materialPool.createMaterial/Setup
+        // FEATURE Example+KVC+application.materialPool.material.exists/Setup
+        // FEATURE Example+KVC+application.materialPool.material.setShaders/Setup
+        // FEATURE Example+KVC+application.materialPool.material.setUniform/Setup
         // FEATURE Example+KVC+application.mouse/Setup
         // FEATURE Example+KVC+application.nodePool.createNode/Setup
         // FEATURE Example+KVC+application.nodePool.createSphere/Setup

@@ -38,6 +38,10 @@ freely, subject to the following restrictions:
 #include "log.h"
 
 // Application+Logging End
+// Application+MaterialPool Start
+#include "render.h"
+
+// Application+MaterialPool End
 // Application+Mouse Start
 #include "input.h"
 
@@ -125,6 +129,10 @@ class Application
             this->setupNodePool();
             
             // Application+NodePool End
+            // Application+MaterialPool Start
+            this->setupMaterialPool();
+            
+            // Application+MaterialPool End
             // Application+ResourcePool Start
             this->setupResourcePool();
             
@@ -135,6 +143,10 @@ class Application
         {
 
 // Application End
+            // Application+MaterialPool Start
+            this->tearMaterialPoolDown();
+            
+            // Application+MaterialPool End
             // Application+NodePool Start
             this->tearNodePoolDown();
             
@@ -238,6 +250,19 @@ class Application
             osg::setNotifyHandler(0);
         }
     // Application+Logging End
+    // Application+MaterialPool Start
+    public:
+        render::MaterialPool *materialPool;
+    private:
+        void setupMaterialPool()
+        {
+            this->materialPool = new render::MaterialPool;
+        }
+        void tearMaterialPoolDown()
+        {
+            delete this->materialPool;
+        }
+    // Application+MaterialPool End
     // Application+Mouse Start
     public:
         osg::ref_ptr<input::Mouse> mouse;
@@ -464,6 +489,170 @@ struct Example
             )
         );
         // Example+KVC+application.camera.rotation End
+        // Example+KVC+application.materialPool.createMaterial Start
+        this->kvc->registerKey(
+            "application.materialPool.createMaterial",
+            SCRIPT_ENVIRONMENT_CLIENT_CALL(
+                // Set.
+                if (!values.empty())
+                {
+                    // Make sure there is one component.
+                    if (values.size() != 1)
+                    {
+                        MAIN_EXAMPLE_LOG(
+                            "ERROR Could not set value for key '%s' "
+                            "because values' count is not 1"
+                        );
+                        return std::vector<std::string>();
+                    }
+        
+                    // Create material.
+                    auto pool = this->app->materialPool;
+                    auto name = values[0];
+                    pool->createMaterial(name);
+                }
+        
+                return std::vector<std::string>();
+            )
+        );
+        // Example+KVC+application.materialPool.createMaterial End
+        // Example+KVC+application.materialPool.material.setShaders Start
+        this->kvc->registerKey(
+            "application.materialPool.material.setShaders",
+            SCRIPT_ENVIRONMENT_CLIENT_CALL(
+                // Set.
+                if (!values.empty())
+                {
+                    // Make sure there are 5 components.
+                    if (values.size() != 5)
+                    {
+                        MAIN_EXAMPLE_LOG(
+                            "ERROR Could not set value for key '%s' "
+                            "because values' count is not 5",
+                            key.c_str()
+                        );
+                        return std::vector<std::string>();
+                    }
+        
+                    auto materialName = values[0];
+                    auto vertexShaderGroup = values[1];
+                    auto vertexShaderName = values[2];
+                    auto fragmentShaderGroup = values[3];
+                    auto fragmentShaderName = values[4];
+        
+                    // Locate material.
+                    auto material = this->app->materialPool->material(materialName);
+                    // Locate shaders.
+                    auto vertexShader =
+                        this->app->resourcePool->resource(
+                            vertexShaderGroup,
+                            vertexShaderName
+                        );
+                    auto fragmentShader =
+                        this->app->resourcePool->resource(
+                            fragmentShaderGroup,
+                            fragmentShaderName
+                        );
+        
+                    // Make sure material and shaders exist.
+                    if (
+                        !material ||
+                        !vertexShader ||
+                        !fragmentShader
+                    ) {
+                        MAIN_EXAMPLE_LOG(
+                            "ERROR Could not set vertex shader '%s/%s' and fragment "
+                            "shader '%s/%s' for material '%s' "
+                            "because material and/or shader(s) do(es) not exist",
+                            vertexShaderGroup.c_str(),
+                            vertexShaderName.c_str(),
+                            fragmentShaderGroup.c_str(),
+                            fragmentShaderName.c_str(),
+                            materialName.c_str()
+                        );
+                        return std::vector<std::string>();
+                    }
+        
+                    // Apply shaders to material.
+                    auto prog =
+                        render::createShaderProgram(
+                            vertexShader->contents,
+                            fragmentShader->contents
+                        );
+                    material->setAttribute(prog);
+                }
+        
+                return std::vector<std::string>();
+            )
+        );
+        // Example+KVC+application.materialPool.material.setShaders End
+        // Example+KVC+application.materialPool.material.setUniform Start
+        this->kvc->registerKey(
+            "application.materialPool.material.setUniform",
+            SCRIPT_ENVIRONMENT_CLIENT_CALL(
+                // Set.
+                if (!values.empty())
+                {
+                    // Make sure there are at least three components.
+                    if (values.size() < 3)
+                    {
+                        MAIN_EXAMPLE_LOG(
+                            "ERROR Could not set value for key '%s' "
+                            "because values' count is less than 3",
+                            key.c_str()
+                        );
+                        return std::vector<std::string>();
+                    }
+        
+                    auto materialName = values[0];
+                    auto uniformName = values[1];
+        
+                    // We only support vec3 values.
+                    // TODO Support other values, too.
+                    if (values.size() != 5)
+                    {
+                        MAIN_EXAMPLE_LOG(
+                            "ERROR Cannot set value for uniform '%s' of material '%s' "
+                            "because we only support vec3 values for now",
+                            uniformName.c_str(),
+                            materialName.c_str()
+                        );
+                        return std::vector<std::string>();
+                    }
+        
+                    // Locate material.
+                    auto material = this->app->materialPool->material(materialName);
+        
+                    // Make sure material exists.
+                    if (!material)
+                    {
+                        MAIN_EXAMPLE_LOG(
+                            "ERROR Could not uniform '%s' for material '%s' "
+                            "because material does not exist",
+                            uniformName.c_str(),
+                            materialName.c_str()
+                        );
+                        return std::vector<std::string>();
+                    }
+        
+                    // Apply uniform.
+                    osg::Uniform *uniform =
+                        material->getOrCreateUniform(
+                            uniformName,
+                            osg::Uniform::FLOAT_VEC3
+                        );
+                    osg::Vec3 vector(
+                        atof(values[2].c_str()),
+                        atof(values[3].c_str()),
+                        atof(values[4].c_str())
+                    );
+                    uniform->set(vector);
+                }
+        
+                return std::vector<std::string>();
+            )
+        );
+        // Example+KVC+application.materialPool.material.setUniform End
         // Example+KVC+application.mouse Start
         this->setupApplicationMouse();
         
