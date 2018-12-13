@@ -886,6 +886,90 @@ struct Example
             )
         );
         // Example+KVC+application.nodePool.node.rotation End
+        // Example+KVC+application.nodePool.node.setMaterial Start
+        this->kvc->registerKey(
+            "application.nodePool.node.setMaterial",
+            SCRIPT_ENVIRONMENT_CLIENT_CALL(
+                // Set.
+                if (!values.empty())
+                {
+                    // Make sure there is at least one component.
+                    if (values.size() < 1)
+                    {
+                        MAIN_EXAMPLE_LOG(
+                            "ERROR Could not set value for key '%s' "
+                            "because values' count is less than 1",
+                            key.c_str()
+                        );
+                        return std::vector<std::string>();
+                    }
+        
+                    // Locate named node.
+                    auto nodeName = values[0];
+                    auto node = this->app->nodePool->node(nodeName);
+        
+                    // Locate material if it was specified.
+                    std::string materialName = "(nil)";
+                    osg::StateSet *material = 0;
+                    if (values.size() == 2)
+                    {
+                        materialName = values[1];
+                        material = this->app->materialPool->material(materialName);
+                    }
+        
+                    // Make sure node exists.
+                    if (!node)
+                    {
+                        MAIN_EXAMPLE_LOG(
+                            "ERROR Could not set material '%s' for node '%s' "
+                            "because node does not exist",
+                            materialName.c_str(),
+                            nodeName.c_str()
+                        );
+                        return std::vector<std::string>();
+                    }
+        
+                    // Apply material.
+                    node->setStateSet(material);
+                }
+        
+                return std::vector<std::string>();
+            )
+        );
+        // Example+KVC+application.nodePool.node.setMaterial End
+        // Example+KVC+application.resourcePool.resource.exists Start
+        this->kvc->registerKey(
+            "application.resourcePool.resource.exists",
+            SCRIPT_ENVIRONMENT_CLIENT_CALL(
+                // Set.
+                if (!values.empty())
+                {
+                    // Make sure there are two components.
+                    if (values.size() != 2)
+                    {
+                        MAIN_EXAMPLE_LOG(
+                            "ERROR Could not set value for key '%s' "
+                            "because values' count is not 2"
+                        );
+                        return std::vector<std::string>();
+                    }
+        
+                    // Locate named resource.
+                    auto pool = this->app->resourcePool;
+                    auto group = values[0];
+                    auto name = values[1];
+                    auto res = pool->resource(group, name);
+                    // Report its presence.
+                    if (res != 0)
+                    {
+                        return std::vector<std::string>({ "true" });
+                    }
+                }
+        
+                return std::vector<std::string>();
+            )
+        );
+        // Example+KVC+application.resourcePool.resource.exists End
 
         // Example+LoadEmbeddedAPIScript Start
         this->loadEmbeddedAPIScript();

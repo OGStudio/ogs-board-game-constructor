@@ -10,12 +10,10 @@ root:addChild(sphere)
 
 -- Create simple material for the whole scene.
 local mat = materialPool:createMaterial("color")
---[[
 mat:setShaders(
     resourcePool:resource("shaders", "color.vert"),
     resourcePool:resource("shaders", "color.frag")
 )
 root:setMaterial(mat)
---]]
 
 

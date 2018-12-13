@@ -17,14 +17,21 @@ main.application.nodePool
 main.application.nodePool.createNode
 main.application.nodePool.createSphere
 main.application.nodePool.node
+main.application.nodePool.node.setMaterial
+main.application.resourcePool
+main.application.resourcePool.resource
 
 # scene
 scene.Node
 scene.Node.addChild
 scene.Node.position
 scene.Node.rotation
+scene.Node.setMaterial
 
 # render
 render.Material
 render.Material.setShaders
 render.Material.setUniform
+
+# resource
+resource.Resource

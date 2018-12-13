@@ -34,8 +34,10 @@ Example+KVC+application.nodePool.node.addChild
 Example+KVC+application.nodePool.node.exists
 Example+KVC+application.nodePool.node.position
 Example+KVC+application.nodePool.node.rotation
+Example+KVC+application.nodePool.node.setMaterial
 Example+KVC+application.nodePool.createNode
 Example+KVC+application.nodePool.createSphere
+Example+KVC+application.resourcePool.resource.exists
 
 main-desktop
 main+Arguments-desktop
@@ -69,8 +71,8 @@ setupCamera
 
 # resource
 RESOURCE_LOG
-#RESOURCE_POOL_LOG
-#Pool
+RESOURCE_POOL_LOG
+Pool
 #Pool+loadResource
 Resource
 ResourceStreamBuffer

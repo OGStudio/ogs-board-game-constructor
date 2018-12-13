@@ -124,6 +124,8 @@ namespace main
         // FEATURE Example+KVC+application.nodePool.node.exists/Setup
         // FEATURE Example+KVC+application.nodePool.node.position/Setup
         // FEATURE Example+KVC+application.nodePool.node.rotation/Setup
+        // FEATURE Example+KVC+application.nodePool.node.setMaterial/Setup
+        // FEATURE Example+KVC+application.resourcePool.resource.exists/Setup
 
         // FEATURE Example+LoadEmbeddedAPIScript/Setup
         // FEATURE Example+LoadEmbeddedResources/Setup

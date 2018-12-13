@@ -221,6 +221,20 @@ end
 
 resource = {}
 
+-- resource.Resource Start
+-- NOTE This is only a wrapper for a resource at C++ side.
+-- NOTE This does NOT create anything at C++ side.
+function resource.createResource(group, name)
+    local instance = {
+        __group = group,
+        __name = name,
+
+-- resource.Resource End
+-- resource.Resource Start
+    }
+    return instance
+end
+-- resource.Resource End
 
 scene = {}
 
@@ -240,6 +254,19 @@ function scene.createNode(name)
             ENV:call(key, {parent, child})
         end,
         -- scene.Node.addChild End
+        -- scene.Node.setMaterial Start
+        setMaterial = function(self, material)
+            local key = "application.nodePool.node.setMaterial"
+            local node = self.__name
+            local params = {node}
+            -- If material does not exist, it's a nil material.
+            if (material)
+            then
+                table.insert(params, material.__name)
+            end
+            ENV:call(key, params)
+        end,
+        -- scene.Node.setMaterial End
 -- scene.Node Start
     }
 
@@ -447,3 +474,19 @@ function main.application.nodePool.node(self, name)
     return scene.createNode(name)
 end
 -- main.application.nodePool.node End
+-- main.application.resourcePool Start
+main.application.resourcePool = { }
+-- main.application.resourcePool End
+-- main.application.resourcePool.resource Start
+function main.application.resourcePool.resource(self, group, name)
+    local key = "application.resourcePool.resource.exists"
+    -- Find out if resource exists in C++.
+    local result = ENV:call(key, {group, name})
+    -- Return nothing if resource does not exist.
+    if (not result[1]) then
+        return nil
+    end
+    -- Return Lua representation.
+    return resource.createResource(group, name)
+end
+-- main.application.resourcePool.resource End
