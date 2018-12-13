@@ -14,6 +14,7 @@ mat:setShaders(
     resourcePool:resource("shaders", "color.vert"),
     resourcePool:resource("shaders", "color.frag")
 )
+mat:setUniform("color", {1, 0, 0})
 root:setMaterial(mat)
 
 
