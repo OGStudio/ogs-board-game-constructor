@@ -45,7 +45,6 @@ freely, subject to the following restrictions:
 // FEATURE Example+LoadLocalIndexScript/Include
 // FEATURE Example+LoadRemoteIndexScript/Include
 // FEATURE Example+ScriptingEnvironment/Include
-// FEATURE Example+VBO/Include
 
 // FEATURE MAIN_APPLICATION_LOG/Impl
 // FEATURE MAIN_EXAMPLE_ENVIRONMENT_FUNCTION/Impl

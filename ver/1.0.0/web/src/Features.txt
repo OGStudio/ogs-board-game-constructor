@@ -26,7 +26,6 @@ Example+Parameters
 Example+ScriptingEnvironment
 #Example+StaticPluginOSG
 #Example+StaticPluginPNG
-#Example+VBO
 
 Example+KVC
 Example+KVC+application.camera.clearColor
@@ -45,6 +44,13 @@ Example+KVC+application.nodePool.node.setMaterial
 Example+KVC+application.nodePool.createNode
 Example+KVC+application.nodePool.createSphere
 Example+KVC+application.resourcePool.resource.exists
+
+NodePool
+NodePool+Root
+NodePool+VBO
+NodePool+createNode
+NodePool+createSphere
+NodePool+node
 
 main-web
 main+Arguments-web
@@ -95,15 +101,10 @@ ResourceStreamBuffer
 extension
 
 # scene
-Pool
-Pool+Root
-Pool+createNode
-Pool+createSphere
-Pool+node
 createShape
 createSphere
 degreesToQuaternion
-nodeAtPosition
+#nodeAtPosition
 quaternionToDegrees
 simplePosition
 setSimplePosition
