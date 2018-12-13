@@ -1,7 +1,7 @@
-FEATURE scene.h/Setup
+FEATURE main.h/Setup
 this->setupRoot();
 
-FEATURE scene.h/Impl
+FEATURE main.h/Impl
 private:
     void setupRoot()
     {

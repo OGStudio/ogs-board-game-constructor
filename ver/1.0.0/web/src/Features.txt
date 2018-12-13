@@ -1,13 +1,13 @@
 # main
 MAIN_APPLICATION_LOG
 Application
-#Application+CameraManipulator
+Application+CameraManipulator
 Application+HTTPClient
 Application+HTTPClientProcessor
 Application+Logging
-#Application+MaterialPool
+Application+MaterialPool
 Application+Mouse
-#Application+NodePool
+Application+NodePool
 Application+Rendering
 Application+ResourcePool
 Application+camera
@@ -30,7 +30,21 @@ Example+ScriptingEnvironment
 
 Example+KVC
 Example+KVC+application.camera.clearColor
+Example+KVC+application.camera.position
+Example+KVC+application.camera.rotation
+Example+KVC+application.materialPool.createMaterial
+Example+KVC+application.materialPool.material
+Example+KVC+application.materialPool.material.setShaders
+Example+KVC+application.materialPool.material.setUniform
 Example+KVC+application.mouse
+Example+KVC+application.nodePool.node.addChild
+Example+KVC+application.nodePool.node.exists
+Example+KVC+application.nodePool.node.position
+Example+KVC+application.nodePool.node.rotation
+Example+KVC+application.nodePool.node.setMaterial
+Example+KVC+application.nodePool.createNode
+Example+KVC+application.nodePool.createSphere
+Example+KVC+application.resourcePool.resource.exists
 
 main-web
 main+Arguments-web
@@ -65,7 +79,7 @@ HTTPRequestProcessorFetch
 fetch
 
 # render
-#MaterialPool
+MaterialPool
 VBOSetupVisitor
 createGraphicsContext-desktop
 createShaderProgram
@@ -81,11 +95,11 @@ ResourceStreamBuffer
 extension
 
 # scene
-#Pool
-#Pool+Root
-#Pool+createNode
-#Pool+createSphere
-#Pool+node
+Pool
+Pool+Root
+Pool+createNode
+Pool+createSphere
+Pool+node
 createShape
 createSphere
 degreesToQuaternion
@@ -93,6 +107,8 @@ nodeAtPosition
 quaternionToDegrees
 simplePosition
 setSimplePosition
+simpleRotation
+setSimpleRotation
 
 # script
 SCRIPT_ENVIRONMENT_CLIENT_CALL

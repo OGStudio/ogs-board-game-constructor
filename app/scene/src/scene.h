@@ -29,8 +29,6 @@ freely, subject to the following restrictions:
 // FEATURE simplePosition/Include
 // FEATURE setSimplePosition/Include
 
-// FEATURE Pool/Include
-
 namespace bgc
 {
 namespace scene
@@ -49,17 +47,6 @@ namespace scene
 // FEATURE nodeAtPosition/Impl
 
 // FEATURE LinearInterpolator/Impl
-
-// FEATURE Pool/Setup
-            // FEATURE Pool+Root/Setup
-// FEATURE Pool/TearDown
-// FEATURE Pool/Impl
-    // FEATURE Pool+Root/Impl
-
-    // FEATURE Pool+createNode/Impl
-    // FEATURE Pool+createSphere/Impl
-    // FEATURE Pool+node/Impl
-// FEATURE Pool/End
 
 } // namespace scene
 } // namespace bgc

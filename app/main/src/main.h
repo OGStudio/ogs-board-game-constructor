@@ -25,6 +25,8 @@ freely, subject to the following restrictions:
 #ifndef OGS_BOARD_GAME_CONSTRUCTOR_MAIN_H
 #define OGS_BOARD_GAME_CONSTRUCTOR_MAIN_H
 
+// FEATURE NodePool/Include
+
 // FEATURE Application+frame+Reporting/Include
 // FEATURE Application+handleEvent-web/Include
 // FEATURE Application+setupWindow-web/Include
@@ -34,7 +36,6 @@ freely, subject to the following restrictions:
 // FEATURE Application+Logging/Include
 // FEATURE Application+MaterialPool/Include
 // FEATURE Application+Mouse/Include
-// FEATURE Application+NodePool/Include
 // FEATURE Application+Rendering/Include
 // FEATURE Application+ResourcePool/Include
 // FEATURE Application+WindowResizing-web/Include
@@ -58,6 +59,20 @@ namespace bgc
 {
 namespace main
 {
+
+// FEATURE NodePool/Setup
+            // FEATURE NodePool+Root/Setup
+// FEATURE NodePool/TearDown
+// FEATURE NodePool/Impl
+    // FEATURE NodePool+Root/Impl
+    // FEATURE NodePool+VBO/Impl
+
+    // FEATURE NodePool+createNode/Impl
+    // FEATURE NodePool+createSphere/Start
+        // FEATURE NodePool+VBO/Node
+    // FEATURE NodePool+createSphere/End
+    // FEATURE NodePool+node/Impl
+// FEATURE NodePool/End
 
 // FEATURE Application/Setup
             // FEATURE Application+Logging/Setup

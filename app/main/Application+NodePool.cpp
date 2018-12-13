@@ -1,6 +1,3 @@
-FEATURE main.h/Include
-#include "scene.h"
-
 FEATURE main.h/Setup
 this->setupNodePool();
 
@@ -9,11 +6,11 @@ this->tearNodePoolDown();
 
 FEATURE main.h/Impl
 public:
-    scene::Pool *nodePool;
+    NodePool *nodePool;
 private:
     void setupNodePool()
     {
-        this->nodePool = new scene::Pool;
+        this->nodePool = new NodePool;
 
         // Set pool's root node to viewer.
         auto root = this->nodePool->node("root");

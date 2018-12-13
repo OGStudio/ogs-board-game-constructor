@@ -39,6 +39,12 @@ Example+KVC+application.nodePool.createNode
 Example+KVC+application.nodePool.createSphere
 Example+KVC+application.resourcePool.resource.exists
 
+NodePool
+NodePool+Root
+NodePool+createNode
+NodePool+createSphere
+NodePool+node
+
 main-desktop
 main+Arguments-desktop
 
@@ -79,15 +85,10 @@ ResourceStreamBuffer
 extension
 
 # scene
-Pool
-Pool+Root
-Pool+createNode
-Pool+createSphere
-Pool+node
 createShape
 createSphere
 degreesToQuaternion
-nodeAtPosition
+#nodeAtPosition
 quaternionToDegrees
 simplePosition
 setSimplePosition

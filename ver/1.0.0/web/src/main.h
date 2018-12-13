@@ -25,6 +25,7 @@ freely, subject to the following restrictions:
 #ifndef OGS_BOARD_GAME_CONSTRUCTOR_MAIN_H
 #define OGS_BOARD_GAME_CONSTRUCTOR_MAIN_H
 
+
 // Application+frame+Reporting Start
 #include "core.h"
 
@@ -38,6 +39,10 @@ freely, subject to the following restrictions:
 
 // Application+setupWindow-web End
 
+// Application+CameraManipulator Start
+#include <osgGA/TrackballManipulator>
+
+// Application+CameraManipulator End
 // Application+HTTPClient Start
 #include "network.h"
 
@@ -46,6 +51,10 @@ freely, subject to the following restrictions:
 #include "log.h"
 
 // Application+Logging End
+// Application+MaterialPool Start
+#include "render.h"
+
+// Application+MaterialPool End
 // Application+Mouse Start
 #include "input.h"
 
@@ -112,6 +121,8 @@ namespace bgc
 namespace main
 {
 
+
+
 // Application Start
 class Application
 {
@@ -128,10 +139,22 @@ class Application
             this->setupRendering();
             
             // Application+Rendering End
+            // Application+CameraManipulator Start
+            this->setupCameraManipulator();
+            
+            // Application+CameraManipulator End
             // Application+Mouse Start
             this->setupMouse();
             
             // Application+Mouse End
+            // Application+NodePool Start
+            this->setupNodePool();
+            
+            // Application+NodePool End
+            // Application+MaterialPool Start
+            this->setupMaterialPool();
+            
+            // Application+MaterialPool End
             // Application+ResourcePool Start
             this->setupResourcePool();
             
@@ -158,6 +181,14 @@ class Application
             this->tearHTTPClientDown();
             
             // Application+HTTPClient End
+            // Application+MaterialPool Start
+            this->tearMaterialPoolDown();
+            
+            // Application+MaterialPool End
+            // Application+NodePool Start
+            this->tearNodePoolDown();
+            
+            // Application+NodePool End
             // Application+ResourcePool Start
             this->tearResourcePoolDown();
             
@@ -332,6 +363,21 @@ class Application
         }
     // Application+setupWindow-web End
 
+    // Application+CameraManipulator Start
+    private:
+        osg::ref_ptr<osgGA::TrackballManipulator> cameraManip;
+        void setupCameraManipulator()
+        {
+            // Create manipulator: CRITICAL for mobile and web.
+            this->cameraManip = new osgGA::TrackballManipulator;
+            this->viewer->setCameraManipulator(this->cameraManip);
+        }
+    public:
+        osgGA::TrackballManipulator *cameraManipulator()
+        {
+            return this->cameraManip;
+        }
+    // Application+CameraManipulator End
     // Application+HTTPClient Start
     public:
         network::HTTPClient *httpClient;
@@ -389,6 +435,19 @@ class Application
             osg::setNotifyHandler(0);
         }
     // Application+Logging End
+    // Application+MaterialPool Start
+    public:
+        render::MaterialPool *materialPool;
+    private:
+        void setupMaterialPool()
+        {
+            this->materialPool = new render::MaterialPool;
+        }
+        void tearMaterialPoolDown()
+        {
+            delete this->materialPool;
+        }
+    // Application+MaterialPool End
     // Application+Mouse Start
     public:
         osg::ref_ptr<input::Mouse> mouse;
@@ -406,6 +465,24 @@ class Application
             this->viewer->removeEventHandler(this->mouse);
         }
     // Application+Mouse End
+    // Application+NodePool Start
+    public:
+        NodePool *nodePool;
+    private:
+        void setupNodePool()
+        {
+            this->nodePool = new NodePool;
+    
+            // Set pool's root node to viewer.
+            auto root = this->nodePool->node("root");
+            this->setScene(root);
+        }
+        void tearNodePoolDown()
+        {
+            this->setScene(0);
+            delete this->nodePool;
+        }
+    // Application+NodePool End
     // Application+Rendering Start
     public:
         void setScene(osg::Node *scene)
@@ -513,10 +590,571 @@ struct Example
             )
         );
         // Example+KVC+application.camera.clearColor End
+        // Example+KVC+application.camera.position Start
+        this->kvc->registerKey(
+            "application.camera.position",
+            SCRIPT_ENVIRONMENT_CLIENT_CALL(
+                auto manipulator = this->app->cameraManipulator();
+                osg::Vec3d pos;
+                osg::Quat q;
+                manipulator->getTransformation(pos, q);
+        
+                // Set.
+                if (!values.empty())
+                {
+                    // Make sure there are three components.
+                    if (values.size() != 3)
+                    {
+                        MAIN_EXAMPLE_LOG(
+                            "ERROR Could not set value for key '%s' "
+                            "because values' count is not 3"
+                        );
+                        return std::vector<std::string>();
+                    }
+        
+                    // Apply position.
+                    pos = {
+                        atof(values[0].c_str()),
+                        atof(values[1].c_str()),
+                        atof(values[2].c_str()),
+                    };
+                    manipulator->setTransformation(pos, q);
+                }
+        
+                // Return current position for Get and after Set.
+                manipulator->getTransformation(pos, q);
+                return std::vector<std::string>({
+                    format::printfString("%f", pos.x()),
+                    format::printfString("%f", pos.y()),
+                    format::printfString("%f", pos.z()),
+                });
+            )
+        );
+        // Example+KVC+application.camera.position End
+        // Example+KVC+application.camera.rotation Start
+        this->kvc->registerKey(
+            "application.camera.rotation",
+            SCRIPT_ENVIRONMENT_CLIENT_CALL(
+                auto manipulator = this->app->cameraManipulator();
+                osg::Vec3d pos;
+                osg::Quat q;
+                manipulator->getTransformation(pos, q);
+        
+                // Set.
+                if (!values.empty())
+                {
+                    // Make sure there are three components.
+                    if (values.size() != 3)
+                    {
+                        MAIN_EXAMPLE_LOG(
+                            "ERROR Could not set value for key '%s' "
+                            "because values' count is not 3"
+                        );
+                        return std::vector<std::string>();
+                    }
+        
+                    // Apply rotation.
+                    osg::Vec3d rot = {
+                        atof(values[0].c_str()),
+                        atof(values[1].c_str()),
+                        atof(values[2].c_str()),
+                    };
+                    q = scene::degreesToQuaternion(rot);
+                    manipulator->setTransformation(pos, q);
+                }
+        
+                // Return current position for Get and after Set.
+                manipulator->getTransformation(pos, q);
+                auto rot = scene::quaternionToDegrees(q);
+                return std::vector<std::string>({
+                    format::printfString("%f", rot.x()),
+                    format::printfString("%f", rot.y()),
+                    format::printfString("%f", rot.z()),
+                });
+            )
+        );
+        // Example+KVC+application.camera.rotation End
+        // Example+KVC+application.materialPool.createMaterial Start
+        this->kvc->registerKey(
+            "application.materialPool.createMaterial",
+            SCRIPT_ENVIRONMENT_CLIENT_CALL(
+                // Set.
+                if (!values.empty())
+                {
+                    // Make sure there is one component.
+                    if (values.size() != 1)
+                    {
+                        MAIN_EXAMPLE_LOG(
+                            "ERROR Could not set value for key '%s' "
+                            "because values' count is not 1"
+                        );
+                        return std::vector<std::string>();
+                    }
+        
+                    // Create material.
+                    auto pool = this->app->materialPool;
+                    auto name = values[0];
+                    pool->createMaterial(name);
+                }
+        
+                return std::vector<std::string>();
+            )
+        );
+        // Example+KVC+application.materialPool.createMaterial End
+        // Example+KVC+application.materialPool.material.setShaders Start
+        this->kvc->registerKey(
+            "application.materialPool.material.setShaders",
+            SCRIPT_ENVIRONMENT_CLIENT_CALL(
+                // Set.
+                if (!values.empty())
+                {
+                    // Make sure there are 5 components.
+                    if (values.size() != 5)
+                    {
+                        MAIN_EXAMPLE_LOG(
+                            "ERROR Could not set value for key '%s' "
+                            "because values' count is not 5",
+                            key.c_str()
+                        );
+                        return std::vector<std::string>();
+                    }
+        
+                    auto materialName = values[0];
+                    auto vertexShaderGroup = values[1];
+                    auto vertexShaderName = values[2];
+                    auto fragmentShaderGroup = values[3];
+                    auto fragmentShaderName = values[4];
+        
+                    // Locate material.
+                    auto material = this->app->materialPool->material(materialName);
+                    // Locate shaders.
+                    auto vertexShader =
+                        this->app->resourcePool->resource(
+                            vertexShaderGroup,
+                            vertexShaderName
+                        );
+                    auto fragmentShader =
+                        this->app->resourcePool->resource(
+                            fragmentShaderGroup,
+                            fragmentShaderName
+                        );
+        
+                    // Make sure material and shaders exist.
+                    if (
+                        !material ||
+                        !vertexShader ||
+                        !fragmentShader
+                    ) {
+                        MAIN_EXAMPLE_LOG(
+                            "ERROR Could not set vertex shader '%s/%s' and fragment "
+                            "shader '%s/%s' for material '%s' "
+                            "because material and/or shader(s) do(es) not exist",
+                            vertexShaderGroup.c_str(),
+                            vertexShaderName.c_str(),
+                            fragmentShaderGroup.c_str(),
+                            fragmentShaderName.c_str(),
+                            materialName.c_str()
+                        );
+                        return std::vector<std::string>();
+                    }
+        
+                    // Apply shaders to material.
+                    auto prog =
+                        render::createShaderProgram(
+                            vertexShader->contents,
+                            fragmentShader->contents
+                        );
+                    material->setAttribute(prog);
+                }
+        
+                return std::vector<std::string>();
+            )
+        );
+        // Example+KVC+application.materialPool.material.setShaders End
+        // Example+KVC+application.materialPool.material.setUniform Start
+        this->kvc->registerKey(
+            "application.materialPool.material.setUniform",
+            SCRIPT_ENVIRONMENT_CLIENT_CALL(
+                // Set.
+                if (!values.empty())
+                {
+                    // Make sure there are at least three components.
+                    if (values.size() < 3)
+                    {
+                        MAIN_EXAMPLE_LOG(
+                            "ERROR Could not set value for key '%s' "
+                            "because values' count is less than 3",
+                            key.c_str()
+                        );
+                        return std::vector<std::string>();
+                    }
+        
+                    auto materialName = values[0];
+                    auto uniformName = values[1];
+        
+                    // We only support vec3 values.
+                    // TODO Support other values, too.
+                    if (values.size() != 5)
+                    {
+                        MAIN_EXAMPLE_LOG(
+                            "ERROR Cannot set value for uniform '%s' of material '%s' "
+                            "because we only support vec3 values for now",
+                            uniformName.c_str(),
+                            materialName.c_str()
+                        );
+                        return std::vector<std::string>();
+                    }
+        
+                    // Locate material.
+                    auto material = this->app->materialPool->material(materialName);
+        
+                    // Make sure material exists.
+                    if (!material)
+                    {
+                        MAIN_EXAMPLE_LOG(
+                            "ERROR Could not uniform '%s' for material '%s' "
+                            "because material does not exist",
+                            uniformName.c_str(),
+                            materialName.c_str()
+                        );
+                        return std::vector<std::string>();
+                    }
+        
+                    // Apply uniform.
+                    osg::Uniform *uniform =
+                        material->getOrCreateUniform(
+                            uniformName,
+                            osg::Uniform::FLOAT_VEC3
+                        );
+                    osg::Vec3 vector(
+                        atof(values[2].c_str()),
+                        atof(values[3].c_str()),
+                        atof(values[4].c_str())
+                    );
+                    uniform->set(vector);
+                }
+        
+                return std::vector<std::string>();
+            )
+        );
+        // Example+KVC+application.materialPool.material.setUniform End
         // Example+KVC+application.mouse Start
         this->setupApplicationMouse();
         
         // Example+KVC+application.mouse End
+        // Example+KVC+application.nodePool.createNode Start
+        this->kvc->registerKey(
+            "application.nodePool.createNode",
+            SCRIPT_ENVIRONMENT_CLIENT_CALL(
+                // Set.
+                if (!values.empty())
+                {
+                    // Make sure there is one component.
+                    if (values.size() != 1)
+                    {
+                        MAIN_EXAMPLE_LOG(
+                            "ERROR Could not set value for key '%s' "
+                            "because values' count is not 1"
+                        );
+                        return std::vector<std::string>();
+                    }
+        
+                    // Create node.
+                    auto pool = this->app->nodePool;
+                    auto name = values[0];
+                    pool->createNode(name);
+                }
+        
+                return std::vector<std::string>();
+            )
+        );
+        // Example+KVC+application.nodePool.createNode End
+        // Example+KVC+application.nodePool.createSphere Start
+        this->kvc->registerKey(
+            "application.nodePool.createSphere",
+            SCRIPT_ENVIRONMENT_CLIENT_CALL(
+                // Set.
+                if (!values.empty())
+                {
+                    // Make sure there are two components.
+                    if (values.size() != 2)
+                    {
+                        MAIN_EXAMPLE_LOG(
+                            "ERROR Could not set value for key '%s' "
+                            "because values' count is not 2"
+                        );
+                        return std::vector<std::string>();
+                    }
+        
+                    // Create sphere.
+                    auto pool = this->app->nodePool;
+                    auto name = values[0];
+                    auto radius = atof(values[1].c_str());
+                    pool->createSphere(name, radius);
+                }
+        
+                return std::vector<std::string>();
+            )
+        );
+        // Example+KVC+application.nodePool.createSphere End
+        // Example+KVC+application.nodePool.node.addChild Start
+        this->kvc->registerKey(
+            "application.nodePool.node.addChild",
+            SCRIPT_ENVIRONMENT_CLIENT_CALL(
+                // Set.
+                if (!values.empty())
+                {
+                    // Make sure there are two components.
+                    if (values.size() != 2)
+                    {
+                        MAIN_EXAMPLE_LOG(
+                            "ERROR Could not set value for key '%s' "
+                            "because values' count is not 2"
+                        );
+                        return std::vector<std::string>();
+                    }
+        
+                    auto pool = this->app->nodePool;
+                    auto parentName = values[0];
+                    auto childName = values[1];
+                    auto parent = pool->node(parentName);
+                    auto child = pool->node(childName);
+        
+                    // Make sure parent and child exist.
+                    if (!parent || !child)
+                    {
+                        MAIN_EXAMPLE_LOG(
+                            "ERROR Could not add '%s' child node to '%s' parent node "
+                            "because node(s) do(es) not exist",
+                            childName.c_str(),
+                            parentName.c_str()
+                        );
+                        return std::vector<std::string>();
+                    }
+        
+                    parent->addChild(child);
+                }
+        
+                return std::vector<std::string>();
+            )
+        );
+        // Example+KVC+application.nodePool.node.addChild End
+        // Example+KVC+application.nodePool.node.exists Start
+        this->kvc->registerKey(
+            "application.nodePool.node.exists",
+            SCRIPT_ENVIRONMENT_CLIENT_CALL(
+                // Set.
+                if (!values.empty())
+                {
+                    // Make sure there is one component.
+                    if (values.size() != 1)
+                    {
+                        MAIN_EXAMPLE_LOG(
+                            "ERROR Could not set value for key '%s' "
+                            "because values' count is not 1"
+                        );
+                        return std::vector<std::string>();
+                    }
+        
+                    // Locate named node.
+                    auto pool = this->app->nodePool;
+                    auto name = values[0];
+                    auto node = pool->node(name);
+                    // Report its presence.
+                    if (node != 0)
+                    {
+                        return std::vector<std::string>({ "true" });
+                    }
+                }
+        
+                return std::vector<std::string>();
+            )
+        );
+        // Example+KVC+application.nodePool.node.exists End
+        // Example+KVC+application.nodePool.node.position Start
+        this->kvc->registerKey(
+            "application.nodePool.node.position",
+            SCRIPT_ENVIRONMENT_CLIENT_CALL(
+                // Make sure there is at least one component.
+                if (values.size() < 1)
+                {
+                    MAIN_EXAMPLE_LOG(
+                        "ERROR Could not set value for key '%s' "
+                        "because values' count is less than 1",
+                        key.c_str()
+                    );
+                    return std::vector<std::string>();
+                }
+        
+                auto nodeName = values[0];
+                auto node = this->app->nodePool->node(nodeName);
+        
+                // Make sure node exists.
+                if (!node)
+                {
+                    MAIN_EXAMPLE_LOG(
+                        "ERROR Could not get or set position for node '%s' "
+                        "because it does not exist",
+                        nodeName.c_str()
+                    );
+                    return std::vector<std::string>();
+                }
+        
+                // Set.
+                if (values.size() == 4)
+                {
+                    osg::Vec3 position(
+                        atof(values[1].c_str()),
+                        atof(values[2].c_str()),
+                        atof(values[3].c_str())
+                    );
+                    scene::setSimplePosition(node, position);
+                }
+        
+                // Get.
+                auto position = scene::simplePosition(node);
+                return std::vector<std::string>({
+                    format::printfString("%f", position.x()),
+                    format::printfString("%f", position.y()),
+                    format::printfString("%f", position.z()),
+                });
+            )
+        );
+        // Example+KVC+application.nodePool.node.position End
+        // Example+KVC+application.nodePool.node.rotation Start
+        this->kvc->registerKey(
+            "application.nodePool.node.rotation",
+            SCRIPT_ENVIRONMENT_CLIENT_CALL(
+                // Make sure there is at least one component.
+                if (values.size() < 1)
+                {
+                    MAIN_EXAMPLE_LOG(
+                        "ERROR Could not set value for key '%s' "
+                        "because values' count is less than 1",
+                        key.c_str()
+                    );
+                    return std::vector<std::string>();
+                }
+        
+                auto nodeName = values[0];
+                auto node = this->app->nodePool->node(nodeName);
+        
+                // Make sure node exists.
+                if (!node)
+                {
+                    MAIN_EXAMPLE_LOG(
+                        "ERROR Could not get or set rotation for node '%s' "
+                        "because it does not exist",
+                        nodeName.c_str()
+                    );
+                    return std::vector<std::string>();
+                }
+        
+                // Set.
+                if (values.size() == 4)
+                {
+                    osg::Vec3 rotation(
+                        atof(values[1].c_str()),
+                        atof(values[2].c_str()),
+                        atof(values[3].c_str())
+                    );
+                    scene::setSimpleRotation(node, rotation);
+                }
+        
+                // Get.
+                auto rotation = scene::simpleRotation(node);
+                return std::vector<std::string>({
+                    format::printfString("%f", rotation.x()),
+                    format::printfString("%f", rotation.y()),
+                    format::printfString("%f", rotation.z()),
+                });
+            )
+        );
+        // Example+KVC+application.nodePool.node.rotation End
+        // Example+KVC+application.nodePool.node.setMaterial Start
+        this->kvc->registerKey(
+            "application.nodePool.node.setMaterial",
+            SCRIPT_ENVIRONMENT_CLIENT_CALL(
+                // Set.
+                if (!values.empty())
+                {
+                    // Make sure there is at least one component.
+                    if (values.size() < 1)
+                    {
+                        MAIN_EXAMPLE_LOG(
+                            "ERROR Could not set value for key '%s' "
+                            "because values' count is less than 1",
+                            key.c_str()
+                        );
+                        return std::vector<std::string>();
+                    }
+        
+                    // Locate named node.
+                    auto nodeName = values[0];
+                    auto node = this->app->nodePool->node(nodeName);
+        
+                    // Locate material if it was specified.
+                    std::string materialName = "(nil)";
+                    osg::StateSet *material = 0;
+                    if (values.size() == 2)
+                    {
+                        materialName = values[1];
+                        material = this->app->materialPool->material(materialName);
+                    }
+        
+                    // Make sure node exists.
+                    if (!node)
+                    {
+                        MAIN_EXAMPLE_LOG(
+                            "ERROR Could not set material '%s' for node '%s' "
+                            "because node does not exist",
+                            materialName.c_str(),
+                            nodeName.c_str()
+                        );
+                        return std::vector<std::string>();
+                    }
+        
+                    // Apply material.
+                    node->setStateSet(material);
+                }
+        
+                return std::vector<std::string>();
+            )
+        );
+        // Example+KVC+application.nodePool.node.setMaterial End
+        // Example+KVC+application.resourcePool.resource.exists Start
+        this->kvc->registerKey(
+            "application.resourcePool.resource.exists",
+            SCRIPT_ENVIRONMENT_CLIENT_CALL(
+                // Set.
+                if (!values.empty())
+                {
+                    // Make sure there are two components.
+                    if (values.size() != 2)
+                    {
+                        MAIN_EXAMPLE_LOG(
+                            "ERROR Could not set value for key '%s' "
+                            "because values' count is not 2"
+                        );
+                        return std::vector<std::string>();
+                    }
+        
+                    // Locate named resource.
+                    auto pool = this->app->resourcePool;
+                    auto group = values[0];
+                    auto name = values[1];
+                    auto res = pool->resource(group, name);
+                    // Report its presence.
+                    if (res != 0)
+                    {
+                        return std::vector<std::string>({ "true" });
+                    }
+                }
+        
+                return std::vector<std::string>();
+            )
+        );
+        // Example+KVC+application.resourcePool.resource.exists End
 
         // Example+LoadEmbeddedAPIScript Start
         this->loadEmbeddedAPIScript();

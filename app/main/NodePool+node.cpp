@@ -1,4 +1,4 @@
-FEATURE scene.h/Impl
+FEATURE main.h/Impl
 public:
     osg::MatrixTransform *node(const std::string &name)
     {

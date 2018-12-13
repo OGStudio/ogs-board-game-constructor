@@ -25,6 +25,12 @@ freely, subject to the following restrictions:
 #ifndef OGS_BOARD_GAME_CONSTRUCTOR_MAIN_H
 #define OGS_BOARD_GAME_CONSTRUCTOR_MAIN_H
 
+// NodePool Start
+#include "scene.h"
+#include <osg/MatrixTransform>
+
+// NodePool End
+
 // Application+frame+Reporting Start
 #include "core.h"
 
@@ -46,10 +52,6 @@ freely, subject to the following restrictions:
 #include "input.h"
 
 // Application+Mouse End
-// Application+NodePool Start
-#include "scene.h"
-
-// Application+NodePool End
 // Application+Rendering Start
 #include "render.h"
 
@@ -100,6 +102,85 @@ namespace bgc
 {
 namespace main
 {
+
+// NodePool Start
+class NodePool
+{
+    public:
+        NodePool()
+        {
+
+// NodePool End
+            // NodePool+Root Start
+            this->setupRoot();
+            
+            // NodePool+Root End
+// NodePool Start
+        }
+        ~NodePool()
+        {
+
+// NodePool End
+// NodePool Start
+        }
+
+    private:
+        std::map<std::string, osg::ref_ptr<osg::MatrixTransform> > nodes;
+
+// NodePool End
+    // NodePool+Root Start
+    private:
+        void setupRoot()
+        {
+            auto root = new osg::MatrixTransform;
+            this->nodes["root"] = root;
+        }
+    // NodePool+Root End
+
+    // NodePool+createNode Start
+    public:
+        osg::MatrixTransform *createNode(const std::string &name)
+        {
+            auto node = new osg::MatrixTransform;
+            node->setName(name);
+            this->nodes[name] = node;
+            return node;
+        }
+    // NodePool+createNode End
+    // NodePool+createSphere Start
+    public:
+        osg::MatrixTransform *createSphere(
+            const std::string &name,
+            float radius
+        ) {
+            auto node = scene::createSphere(radius);
+            node->setName(name);
+            this->nodes[name] = node;
+    
+    // NodePool+createSphere End
+    // NodePool+createSphere Start
+            return node;
+        }
+    // NodePool+createSphere End
+    // NodePool+node Start
+    public:
+        osg::MatrixTransform *node(const std::string &name)
+        {
+            auto it = this->nodes.find(name);
+    
+            // Return valid node.
+            if (it != this->nodes.end())
+            {
+                return it->second.get();
+            }
+    
+            // Found noting.
+            return 0;
+        }
+    // NodePool+node End
+// NodePool Start
+};
+// NodePool End
 
 // Application Start
 class Application
@@ -282,11 +363,11 @@ class Application
     // Application+Mouse End
     // Application+NodePool Start
     public:
-        scene::Pool *nodePool;
+        NodePool *nodePool;
     private:
         void setupNodePool()
         {
-            this->nodePool = new scene::Pool;
+            this->nodePool = new NodePool;
     
             // Set pool's root node to viewer.
             auto root = this->nodePool->node("root");

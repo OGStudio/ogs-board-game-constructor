@@ -40,11 +40,6 @@ freely, subject to the following restrictions:
 
 // setSimplePosition End
 
-// Pool Start
-#include <osg/MatrixTransform>
-
-// Pool End
-
 namespace bgc
 {
 namespace scene
@@ -138,6 +133,26 @@ osg::Vec3f simplePosition(osg::MatrixTransform *node)
     return node->getMatrix().getTrans();
 }
 // simplePosition End
+// setSimpleRotation Start
+//! Set node rotation.
+void setSimpleRotation(osg::MatrixTransform *node, const osg::Vec3f &rotation)
+{
+    osg::Quat quat = degreesToQuaternion(rotation);
+    node->setMatrix(
+        osg::Matrix::scale(node->getMatrix().getScale()) *
+        osg::Matrix::rotate(quat) *
+        osg::Matrix::translate(node->getMatrix().getTrans())
+    );
+}
+// setSimpleRotation End
+// simpleRotation Start
+//! Get node rotation.
+osg::Vec3f simpleRotation(osg::MatrixTransform *node)
+{
+    auto quat = node->getMatrix().getRotate();
+    return quaternionToDegrees(quat);
+}
+// simpleRotation End
 
 // nodeAtPosition Start
 //! Pick node at the specified position using camera's point of view
@@ -179,32 +194,6 @@ osg::Node *nodeAtPosition(
 }
 // nodeAtPosition End
 
-
-// Pool Start
-class Pool
-{
-    public:
-        Pool()
-        {
-
-// Pool End
-// Pool Start
-        }
-        ~Pool()
-        {
-
-// Pool End
-// Pool Start
-        }
-
-    private:
-        std::map<std::string, osg::ref_ptr<osg::MatrixTransform> > nodes;
-
-// Pool End
-
-// Pool Start
-};
-// Pool End
 
 } // namespace scene
 } // namespace bgc

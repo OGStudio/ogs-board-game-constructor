@@ -1,23 +1,24 @@
-FEATURE scene.h/Include
+FEATURE main.h/Include
+#include "scene.h"
 #include <osg/MatrixTransform>
 
-FEATURE scene.h/Setup
-class Pool
+FEATURE main.h/Setup
+class NodePool
 {
     public:
-        Pool()
+        NodePool()
         {
 
-FEATURE scene.h/TearDown
+FEATURE main.h/TearDown
         }
-        ~Pool()
+        ~NodePool()
         {
 
-FEATURE scene.h/Impl
+FEATURE main.h/Impl
         }
 
     private:
         std::map<std::string, osg::ref_ptr<osg::MatrixTransform> > nodes;
 
-FEATURE scene.h/End
+FEATURE main.h/End
 };
